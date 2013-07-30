@@ -25,6 +25,8 @@
     <property name="CSXDAO" ref="citeseerx"/>
     <property name="citeClusterDAO" ref="citegraph"/>
     <property name="repositoryMap" ref="repositoryMap"/>
+    <!-- This list needs to be initialized in order for plugins to add additional content boxes !-->
+    <property name="contentBoxManager" ref="esContentBoxManager"/>
   </bean>
   
   <bean name="/similar" class="edu.psu.citeseerx.web.SimilarityController">

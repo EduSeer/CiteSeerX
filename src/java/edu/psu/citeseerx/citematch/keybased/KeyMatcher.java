@@ -37,7 +37,7 @@ import edu.psu.citeseerx.domain.Document;
  * persistent storage backend.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 89 $ $Date: 2011-03-15 15:12:07 -0400 (Tue, 15 Mar 2011) $
  */
 public class KeyMatcher implements CitationClusterer {
 

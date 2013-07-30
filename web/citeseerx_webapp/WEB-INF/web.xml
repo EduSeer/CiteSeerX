@@ -8,7 +8,9 @@
 
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+         xsi:schemaLocation="
+		http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" 
+		version="2.4">
 
   <display-name>CiteSeerX</display-name>
   <description>Personal Portal for Next Generation CiteSeer Research Repository</description>
@@ -31,6 +33,7 @@
       /WEB-INF/applicationContext-mail.xml
       /WEB-INF/applicationContext-updates.xml
       /WEB-INF/applicationContext-mcs-authorization.xml
+      /WEB-INF/applicationContext-eduseer-plugin.xml
     </param-value>
   </context-param>
   

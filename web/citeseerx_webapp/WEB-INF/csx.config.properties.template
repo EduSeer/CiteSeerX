@@ -13,8 +13,8 @@
 
 jdbc.csx.driverClassName=com.mysql.jdbc.Driver
 jdbc.csx.url=jdbc:mysql://localhost/citeseerx?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&jdbcCompliantTruncation=false
-jdbc.csx.username=
-jdbc.csx.password=
+jdbc.csx.username=csx-devel
+jdbc.csx.password=csx-devel
 
 ##
 ################################
@@ -24,8 +24,8 @@ jdbc.csx.password=
 
 jdbc.citegraph.driverClassName=com.mysql.jdbc.Driver
 jdbc.citegraph.url=jdbc:mysql://localhost/csx_citegraph?useUnicode=true&characterEncoding=UTF-8&jdbcCompliantTruncation=false
-jdbc.citegraph.username=
-jdbc.citegraph.password=
+jdbc.citegraph.username=csx-devel
+jdbc.citegraph.password=csx-devel
 
 ##
 ################################
@@ -35,8 +35,8 @@ jdbc.citegraph.password=
 
 jdbc.mcs.driverClassName=com.mysql.jdbc.Driver
 jdbc.mcs.url=jdbc:mysql://localhost/myciteseerx?useUnicode=true&characterEncoding=UTF-8&jdbcCompliantTruncation=false
-jdbc.mcs.username=
-jdbc.mcs.password=
+jdbc.mcs.username=csx-devel
+jdbc.mcs.password=csx-devel
 
 ##
 ################################
@@ -45,8 +45,8 @@ jdbc.mcs.password=
 ##
 jdbc.csxemetadata.driverClassName=com.mysql.jdbc.Driver
 jdbc.csxemetadata.url=jdbc:mysql://localhost/csx_external_metadata?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&jdbcCompliantTruncation=false
-jdbc.csxemetadata.username=
-jdbc.csxemetadata.password=
+jdbc.csxemetadata.username=csx-devel
+jdbc.csxemetadata.password=csx-devel
 
 ##
 ################################
@@ -54,16 +54,15 @@ jdbc.csxemetadata.password=
 ##  Solr
 ##
 
-solr.selectUrl=http://localhost:8893/solr/select
-solr.updateUrl=http://localhost:8893/solr/update
+solr.selectUrl=http://localhost:8080/solr/select
+solr.updateUrl=http://localhost:8080/solr/update
 solr.selectPeopleUrl=http://localhost:8080/solrPeople/select
 solr.updatePeopleUrl=http://localhost:8080/solrPeople/update
-solr.selectTableUrl=http://localhost:8893/solr-table/select
-solr.updateTableUrl=http://localhost:8893/solr-table/update
-solr.selectAuthorUrl=//localhost:8983/solr-auth/select
-solr.updateAuthorUrl=//localhost:8983/solr-auth/update
-solr.selectAlgorithmUrl=http://localhost:8893/solrAlgorithm/select
-solr.updateAlgorithmUrl=http://localhost:8893/solrAlgorithm/update
+solr.selectAuthorUrl=http://localhost:8080/solrauth/select
+solr.selectTableUrl=http://localhost:8080/solrtable/select
+solr.updateTableUrl=http://localhost:8080/solrtable/update
+solr.selectAlgorithmUrl=http://localhost:8080/solrAlgorithm/select
+solr.updateAlgorithmUrl=http://localhost:8080/solrAlgorithm/update
 
 ##
 ################################
@@ -146,12 +145,3 @@ hp.submitURL=http://localhost
 
 ## 
 ################################
-##
-## Disambiguation Setting
-##
-csx.disambiguation.model=csauthors.rf
-csx.disambiguation.tmpfile=feats.dat
-csx.disambiguation.aff_model=medline_aff.prune.model
-csx.disambiguation.lname_model=medline_lastname.prune.model
-csx.disambiguation.name_stopwords=name_stopwords.txt
-
