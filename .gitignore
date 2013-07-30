@@ -48,3 +48,9 @@ src/perl/FileConversionService/lib/FileConverter/Config.pm
 *.vrb
 *.xdy
 *.tdo
+/target
+/.settings
+/.classpath
+/.project
+/infinitest.filters
+/maven-eclipse.xml
