@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+	<import resource="classpath*:META-INF/de.tudarmstadt.ukp.eduseer.plugin/*dao.ctx.xml" />
+	<import resource="classpath*:META-INF/de.tudarmstadt.ukp.eduseer.plugin/*view.ctx.xml" />
+
+	<!--
+	 -  The following beans showcase how to use content boxes
+	 -->
+	<!--
+	<bean id="dummyContentBox" class="de.tudarmstadt.ukp.eduseer.core.plugin.view.ContentBox">
+		<property name="heading" value="TestHeading"/>
+		<property name="content" value="TestContent"/>
+	</bean>
+
+	<bean id="esContentBoxProvider" class="de.tudarmstadt.ukp.eduseer.core.plugin.view.DefaultContentBoxProvider">
+		<property name="contentBox" ref="dummyContentBox"/>
+	</bean>
+	-->
+
+	<bean id="esContentBoxManager" class="de.tudarmstadt.ukp.eduseer.core.plugin.view.ContentBoxManager">
+		<property name="contentBoxProviders">
+			<list>
+				<!--<ref bean="esContentBoxProvider"/>-->
+			</list>
+		</property>
+	</bean>
+</beans>
