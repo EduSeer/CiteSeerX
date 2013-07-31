@@ -168,6 +168,14 @@
             <span class="Z3988" title="<c:out value="${ coins }"/>">&nbsp;</span>
           </div>
         </c:if>
+        <c:forEach var="contentBox" items="${ contentBoxes }">
+			<div class="content_box">
+				<h2><c:out value="${ contentBox.heading }" /></h2>
+				<div class="content">
+					${ contentBox.content }
+				</div>
+			</div>
+		</c:forEach>
       </div> <%-- sidebar div close --%>
     <div id="abstract">
       <h3>Abstract</h3>

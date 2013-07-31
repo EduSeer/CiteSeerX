@@ -1,4 +1,4 @@
-<%@ include file="shared/IncludeHeader.jsp" %>
+<%@ include file="../shared/IncludeHeader.jsp" %>
   <div id="page_wrapper" class="clearfix"> <!-- Contains all the divisions (div's) within the page (not including top navigation bar, search box and meta information) -->
     <div id="center_content" class="clearfix"> <!-- Contains header div -->
       <div id="primary_content">
