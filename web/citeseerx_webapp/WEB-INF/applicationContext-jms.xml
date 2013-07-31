@@ -3,6 +3,7 @@
 
 <beans>
 
+
   <bean id="jmsResourceAdapter" class="org.apache.activemq.ra.ActiveMQResourceAdapter">
     <property name="serverUrl" value="${activemq.url}"/>
   </bean>
@@ -21,7 +22,6 @@
     <property name="managedConnectionFactory" ref="jmsManagedConnectionFactory"/>
     <property name="connectionManager" ref="connectionManager"/>
   </bean>
-
 
   <!--========================-->
   <!-- OUTBOUND CONFIGURATION -->
@@ -47,6 +47,7 @@
   <!-- INBOUND CONFIGURATION  -->
   <!--========================-->
 
+  
   <bean id="jencks" class="org.jencks.JCAContainer">
     <property name="transactionManager" ref="jmsTransactionManager"/>
     <property name="threadPoolSize" value="20"/>

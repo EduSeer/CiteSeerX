@@ -16,7 +16,7 @@ package edu.psu.citeseerx.citematch.utils;
  * Interface for citation text analyzers.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 28 $ $Date: 2010-11-03 11:35:02 -0400 (Wed, 03 Nov 2010) $
  */
 public interface Analyzer {
 

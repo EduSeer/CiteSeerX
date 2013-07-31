@@ -1,4 +1,4 @@
-<%@ include file="shared/IncludeHeader.jsp" %>
+<%@ include file="../shared/IncludeHeader.jsp" %>
   <div id="center_content" class="clearfix"> <!-- Contains header div -->
     <div id="primary_content">
       <div id="main_content">

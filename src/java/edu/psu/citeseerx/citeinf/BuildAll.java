@@ -24,7 +24,7 @@ import org.json.*;
  * Utility for updating all cluster records with up-to-date inference data.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 88 $ $Date: 2011-03-15 15:10:10 -0400 (Tue, 15 Mar 2011) $
  */
 public class BuildAll {
 
