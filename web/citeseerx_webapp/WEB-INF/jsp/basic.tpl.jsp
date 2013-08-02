@@ -14,15 +14,15 @@
   </div>
 	<div id="content">
 		<div id="result_info">
-			<%@ include file="shared/IncludeResultsInfo.jsp" %>
-			<%@ include file="shared/IncludeResultsPager.jsp" %>
+			<%@ include file="csx/shared/IncludeResultsInfo.jsp" %>
+			<%@ include file="csx/shared/IncludeResultsPager.jsp" %>
 		</div>
 		<div id="result_list">
 			<%-- Check to make sure we actually got results --%>
 			<c:choose>
 				<c:when test="${ nfound == 0 }">
 					<%-- Display error for no results --%>
-					<div class="error"><%@ include file="shared/IncludeResultsError.jsp" %></div>
+					<div class="error"><%@ include file="csx/shared/IncludeResultsError.jsp" %></div>
 				</c:when>
 				<c:otherwise>
 					<c:if test="${ error }"><div class="error"><c:out value="${ errorMsg }" escapeXml="false"/></div></c:if>
@@ -56,14 +56,15 @@
 		</div>
 		<c:if test="${ nfound != 0}">
 			<div id="result_info">
-				<%@ include file="shared/IncludeResultsInfo.jsp" %>
-				<%@ include file="shared/IncludeResultsPager.jsp" %>
+				<%@ include file="csx/shared/IncludeResultsInfo.jsp" %>
+				<%@ include file="csx/shared/IncludeResultsPager.jsp" %>
 			</div>
 		</c:if>
 	</div>
 	
 	<div id="sidebar">
-		<%@ include file="shared/IncludeSidebar.jsp" %>
+		<%-- TODO rkluge: missing --%>
+		<%--<%@ include file="shared/IncludeSidebar.jsp" %> --%>
 	</div>
 </div>
           

@@ -25,7 +25,8 @@
     </table>
     <div>
       <c:if test="${ ! empty nextpageparams }"><a href="<c:url value="/viewdoc/slocation?${ nextpageparams }"/>">More </a></c:if>
-      <a href=""
+      <!-- TODO rkluge: issue -->
+      <!-- <a href="" -->
     </div>
   </c:if>
   <div class="parent_div_spacer"></div>

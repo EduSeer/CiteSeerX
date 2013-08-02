@@ -78,6 +78,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
+                    <warName>eduseer</warName>
 					<archiveClasses>true</archiveClasses>
 					<warSourceDirectory>${basedir}/web/citeseerx_webapp</warSourceDirectory>
 					<webXml>${basedir}/web/citeseerx_webapp/WEB-INF/web.xml</webXml>

@@ -32,16 +32,23 @@ export CSX_DIST="$CSX_HOME/dist"
 export JAVA_OPTS="-Xms1g -Xmx1g"
 # Set the Java classpath
 
-CSX_CLASSPATH="$CSX_CONF";
-for file in `ls $CSX_DIST/lib`; do
-    CSX_CLASSPATH="$CSX_CLASSPATH:$CSX_DIST/lib/$file"
-done
-for file in `ls $CSX_LIB`; do
-    ext=${file##*.}
-    if [ "jar" = "$ext" ]; then
-        CSX_CLASSPATH="$CSX_CLASSPATH:$CSX_LIB/$file"
-    fi
-done
+if [ -f maven-classpath.txt ];
+then
+	CSX_CLASSPATH=$CSX_HOME/target/classes/
+	CSX_CLASSPATH=$CSX_CLASSPATH:$CSX_HOME/conf
+	CSX_CLASSPATH=$CSX_CLASSPATH:$(cat maven-classpath.txt)
+else
+	CSX_CLASSPATH="$CSX_CONF";
+	for file in `ls $CSX_DIST/lib`; do
+	    CSX_CLASSPATH="$CSX_CLASSPATH:$CSX_DIST/lib/$file"
+	done
+	for file in `ls $CSX_LIB`; do
+	    ext=${file##*.}
+	    if [ "jar" = "$ext" ]; then
+	        CSX_CLASSPATH="$CSX_CLASSPATH:$CSX_LIB/$file"
+	    fi
+	done
+fi
 
 export CSX_CLASSPATH="$CSX_CLASSPATH:$CLASSPATH"
 

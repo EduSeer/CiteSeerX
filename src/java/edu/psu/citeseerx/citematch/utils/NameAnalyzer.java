@@ -19,7 +19,7 @@ import java.util.*;
  * use during citation key generation.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 28 $ $Date: 2010-11-03 11:35:02 -0400 (Wed, 03 Nov 2010) $
  */
 public class NameAnalyzer implements Analyzer {
 

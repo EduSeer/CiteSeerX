@@ -24,7 +24,7 @@ import edu.psu.citeseerx.utility.SafeText;
  * a match, the matching citation is flagged as a self citation.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 28 $ $Date: 2010-11-03 11:35:02 -0400 (Wed, 03 Nov 2010) $
  */
 public class SelfCitationFilter {
 

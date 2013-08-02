@@ -115,7 +115,6 @@
     <property name="dataSource" ref="csxDataSource"/>
   </bean>
 
-
   <bean id="citeseerx" class="edu.psu.citeseerx.dao2.logic.CSXDAOImpl">
 	<property name="ackDAO" ref="ackDAO"/>
 	<property name="adminDAO" ref="adminDAO"/>
