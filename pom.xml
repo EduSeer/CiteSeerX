@@ -18,7 +18,7 @@
   <build>
 		<!-- See: http://maven.apache.org/pom.html#Build_Element -->
     <sourceDirectory>${basedir}/src/java</sourceDirectory>
-    <testSourceDirectory>${basedir}/src/test</testSourceDirectory>
+    <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
     <finalName>eduseer</finalName>
 		<!-- See: http://maven.apache.org/pom.html#Resources -->
     <resources>
@@ -33,9 +33,9 @@
       </resource>
     </resources>
     <testResources>
-      <resource>
-        <directory>${basedir}/conf</directory>
-      </resource>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
     </testResources>
     <pluginManagement>
       <plugins>
@@ -389,8 +389,8 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
 	  <!-- Originally: 4.1 -->
-      <version>4.10</version>
-<!--       <scope>test</scope> -->
+      <version>4.4</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.google.code</groupId>
@@ -681,8 +681,8 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>3.1.0.RELEASE</version>
-<!--       <scope>test</scope> -->
+      <version>${org.springframework.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <properties>
