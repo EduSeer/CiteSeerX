@@ -876,7 +876,7 @@ public class DocumentDAOImpl
 
         public GetSetDOICount(final DataSource dataSource)
         {
-            DocumentDAOImpl.this.setDataSource(dataSource);
+            this.setDataSource(dataSource);
             this.setSql(DEF_GET_SET_DOI_COUNT_QUERY);
             this.declareParameter(new SqlParameter(Types.TIMESTAMP));
             this.declareParameter(new SqlParameter(Types.TIMESTAMP));
