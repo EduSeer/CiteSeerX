@@ -12,14 +12,14 @@
  */
 package edu.psu.citeseerx.dao2.logic;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.dao.DataAccessException;
 
 import com.lowagie.text.pdf.PdfReader;
-
-import java.io.IOException;
-import java.io.FileInputStream;
-import java.util.Date;
-import java.util.List;
 
 import edu.psu.citeseerx.dao2.AckDAO;
 import edu.psu.citeseerx.dao2.AdminDAO;
@@ -60,14 +60,15 @@ import edu.psu.citeseerx.domain.ThinDoc;
 import edu.psu.citeseerx.domain.UniqueAuthor;
 import edu.psu.citeseerx.utility.FileNamingUtils;
 
-
 /**
- * Provides a single point access to all Document related persistent storage
- * operations
+ * Provides a single point access to all Document related persistent storage operations
+ *
  * @author Isaac Councill
  * @version $Rev$ $Date$
  */
-public class CSXDAOImpl implements CSXDAO {
+public class CSXDAOImpl
+    implements CSXDAO
+{
 
     private AckDAO ackDAO;
     private AdminDAO adminDAO;
@@ -83,1742 +84,2182 @@ public class CSXDAOImpl implements CSXDAO {
     private LegacyIDDAO legacyIDDAO;
     private TagDAO tagDAO;
     private UniqueAuthorDAO uauthDAO;
-	private UniqueAuthorVersionDAO uauthVersionDAO;
+    private UniqueAuthorVersionDAO uauthVersionDAO;
     private VersionDAO versionDAO;
     private ExternalLinkDAO externalLinkDAO;
     private TableDAO tableDAO;
     private AlgorithmDAO algorithmDAO;
     private RedirectPDFDAO redirectPDFDAO;
-    
-    public void setAckDAO(AckDAO ackDAO) {
+
+    public void setAckDAO(final AckDAO ackDAO)
+    {
         this.ackDAO = ackDAO;
-    } //- setAckDAO
+    } // - setAckDAO
 
-    public void setAdminDAO(AdminDAO adminDAO) {
+    public void setAdminDAO(final AdminDAO adminDAO)
+    {
         this.adminDAO = adminDAO;
-    } //- setAdminDAO
+    } // - setAdminDAO
 
-    public void setAuthDAO(AuthorDAO authDAO) {
+    public void setAuthDAO(final AuthorDAO authDAO)
+    {
         this.authDAO = authDAO;
-    } //- setAuthDAO
+    } // - setAuthDAO
 
-    public void setUniqueAuthDAO(UniqueAuthorDAO uauthDAO) {
+    public void setUniqueAuthDAO(final UniqueAuthorDAO uauthDAO)
+    {
         this.uauthDAO = uauthDAO;
     }
 
-    public void setUniqueAuthVersionDAO(UniqueAuthorVersionDAO uauthVersionDAO) {
+    public void setUniqueAuthVersionDAO(final UniqueAuthorVersionDAO uauthVersionDAO)
+    {
         this.uauthVersionDAO = uauthVersionDAO;
     }
-    
-    public void setCiteChartDAO(CiteChartDAO citeChartDAO) {
+
+    public void setCiteChartDAO(final CiteChartDAO citeChartDAO)
+    {
         this.citeChartDAO = citeChartDAO;
-    } //- setCiteChartDAO
+    } // - setCiteChartDAO
 
-    public void setCiteDAO(CitationDAO citeDAO) {
+    public void setCiteDAO(final CitationDAO citeDAO)
+    {
         this.citeDAO = citeDAO;
-    } //- setCiteDAO
+    } // - setCiteDAO
 
-    public void setDocDAO(DocumentDAO docDAO) {
+    public void setDocDAO(final DocumentDAO docDAO)
+    {
         this.docDAO = docDAO;
-    } //- setDocDAO
+    } // - setDocDAO
 
-    public void setFileDAO(FileDAO fileDAO) {
+    public void setFileDAO(final FileDAO fileDAO)
+    {
         this.fileDAO = fileDAO;
-    } //- setFileDAO
+    } // - setFileDAO
 
-    public void setFileSysDAO(FileSysDAO fileSysDAO) {
+    public void setFileSysDAO(final FileSysDAO fileSysDAO)
+    {
         this.fileSysDAO = fileSysDAO;
-    } //- setFileSysDAO
+    } // - setFileSysDAO
 
-    public void setHubDAO(HubDAO hubDAO) {
+    public void setHubDAO(final HubDAO hubDAO)
+    {
         this.hubDAO = hubDAO;
-    } //- setHubDAO
+    } // - setHubDAO
 
-    public void setKeywordDAO(KeywordDAO keywordDAO) {
+    public void setKeywordDAO(final KeywordDAO keywordDAO)
+    {
         this.keywordDAO = keywordDAO;
-    } //- setKeywordDAO
+    } // - setKeywordDAO
 
-    public void setLegacyIDDAO(LegacyIDDAO legacyIDDAO) {
+    public void setLegacyIDDAO(final LegacyIDDAO legacyIDDAO)
+    {
         this.legacyIDDAO = legacyIDDAO;
-    } //- setLegacyIDDAO
+    } // - setLegacyIDDAO
 
-    public void setTagDAO(TagDAO tagDAO) {
+    public void setTagDAO(final TagDAO tagDAO)
+    {
         this.tagDAO = tagDAO;
-    } //- setTagDAO
-    
-    public void setVersionDAO(VersionDAO versionDAO) {
-        this.versionDAO = versionDAO;
-    } //- setVersionDAO
-    
-    public void setExternalLinkDAO(ExternalLinkDAO externalLinkDAO) {
-        this.externalLinkDAO = externalLinkDAO;
-    } //- setExternalLinkDAO
+    } // - setTagDAO
 
-    public void setTableDAO(TableDAO tableDAO) {
+    public void setVersionDAO(final VersionDAO versionDAO)
+    {
+        this.versionDAO = versionDAO;
+    } // - setVersionDAO
+
+    public void setExternalLinkDAO(final ExternalLinkDAO externalLinkDAO)
+    {
+        this.externalLinkDAO = externalLinkDAO;
+    } // - setExternalLinkDAO
+
+    public void setTableDAO(final TableDAO tableDAO)
+    {
         this.tableDAO = tableDAO;
-    } //- setTableDAO
-    
-    public void setGeneralStatistics(GeneralStatistics generalStatistics) {
-    	this.generalStatistics = generalStatistics;
+    } // - setTableDAO
+
+    public void setGeneralStatistics(final GeneralStatistics generalStatistics)
+    {
+        this.generalStatistics = generalStatistics;
     }
-    
-    public void setAlgorithmDAO(AlgorithmDAO algorithmDAO) {
+
+    public void setAlgorithmDAO(final AlgorithmDAO algorithmDAO)
+    {
         this.algorithmDAO = algorithmDAO;
-    } //- setAlgorithmDAO
-    
-    public void setRedirectPDFDAO(RedirectPDFDAO redirectPDFDAO) {
+    } // - setAlgorithmDAO
+
+    public void setRedirectPDFDAO(final RedirectPDFDAO redirectPDFDAO)
+    {
         this.redirectPDFDAO = redirectPDFDAO;
     }
-    
-    ///////////////////////////////////////////////////////
-    //  CSX Operations                               
-    ///////////////////////////////////////////////////////
 
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.logic.CSXOperations#insertDocumentEntry(edu.psu.citeseerx.domain.Document)
-     */
-    @Override
-    public void insertDocumentEntry(Document doc) throws DataAccessException {
-        docDAO.insertDocument(doc);
-    } //- insertDocumentEntry
+    // /////////////////////////////////////////////////////
+    // CSX Operations
+    // /////////////////////////////////////////////////////
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.logic.CSXOperations#importDocument(edu.psu.citeseerx.domain.Document)
+     *
+     * @see
+     * edu.psu.citeseerx.dao2.logic.CSXOperations#insertDocumentEntry(edu.psu.citeseerx.domain.Document
+     * )
      */
     @Override
-    public void importDocument(Document doc)
-    throws DataAccessException, IOException {
+    public void insertDocumentEntry(final Document doc)
+        throws DataAccessException
+    {
+        this.docDAO.insertDocument(doc);
+    } // - insertDocumentEntry
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * edu.psu.citeseerx.dao2.logic.CSXOperations#importDocument(edu.psu.citeseerx.domain.Document)
+     */
+    @Override
+    public void importDocument(final Document doc)
+        throws DataAccessException, IOException
+    {
         String doi = doc.getDatum(Document.DOI_KEY);
-        
-        docDAO.insertDocumentSrc(doc);
-        
+
+        this.docDAO.insertDocumentSrc(doc);
+
         DocumentFileInfo finfo = doc.getFileInfo();
         for (String url : finfo.getUrls()) {
-            hubDAO.insertUrl(doi, url);
+            this.hubDAO.insertUrl(doi, url);
         }
         for (Hub hub : finfo.getHubs()) {
             for (String url : finfo.getUrls()) {
-                hubDAO.addHubMapping(hub, url, doi);
+                this.hubDAO.addHubMapping(hub, url, doi);
             }
         }
         for (CheckSum sum : finfo.getCheckSums()) {
             sum.setDOI(doi);
-            fileDAO.insertChecksum(sum);
+            this.fileDAO.insertChecksum(sum);
         }
-        
-        insertAuthors(doi, doc.getAuthors());
 
-        insertCitations(doi, doc.getCitations());
+        this.insertAuthors(doi, doc.getAuthors());
 
-        insertAcknowledgments(doi, doc.getAcknowledgments());
+        this.insertCitations(doi, doc.getCitations());
 
-        insertKeywords(doi, doc.getKeywords());
-            
+        this.insertAcknowledgments(doi, doc.getAcknowledgments());
+
+        this.insertKeywords(doi, doc.getKeywords());
+
         for (Tag tag : doc.getTags()) {
-            tagDAO.addTag(doi, tag.getTag());
+            this.tagDAO.addTag(doi, tag.getTag());
         }
 
-        fileSysDAO.writeXML(doc);
+        this.fileSysDAO.writeXML(doc);
 
-    }  //- importDocument
-
+    } // - importDocument
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.logic.CSXOperations#getDocumentFromDB(java.lang.String, boolean, boolean, boolean, boolean, boolean, boolean)
+     *
+     * @see edu.psu.citeseerx.dao2.logic.CSXOperations#getDocumentFromDB(java.lang.String, boolean,
+     * boolean, boolean, boolean, boolean, boolean)
      */
     @Override
-    public Document getDocumentFromDB(String doi, boolean getCitations,
-            boolean getContexts, boolean getSource, boolean getAcks,
-            boolean getKeywords, boolean getTags) throws DataAccessException {
-        
-        Document doc = docDAO.getDocument(doi, getSource);
+    public Document getDocumentFromDB(final String doi, final boolean getCitations, final boolean getContexts,
+            final boolean getSource, final boolean getAcks, final boolean getKeywords, final boolean getTags)
+        throws DataAccessException
+    {
 
-        if (doc == null) {
+        Document doc = this.docDAO.getDocument(doi, getSource);
+
+        if (doc == null)
             return null;
-        }
 
         DocumentFileInfo finfo = doc.getFileInfo();
-        List<String> urls = hubDAO.getUrls(doi);
+        List<String> urls = this.hubDAO.getUrls(doi);
         for (Object o : urls) {
-            finfo.addUrl((String)o);
+            finfo.addUrl((String) o);
         }
-        
-        List<Author> authors = authDAO.getDocAuthors(doi, getSource);
+
+        List<Author> authors = this.authDAO.getDocAuthors(doi, getSource);
         for (Author author : authors) {
-                doc.addAuthor(author);
+            doc.addAuthor(author);
         }
 
         if (getCitations) {
-            List<Citation> citations =
-                citeDAO.getCitations(doi, getContexts);
+            List<Citation> citations = this.citeDAO.getCitations(doi, getContexts);
             for (Citation citation : citations) {
                 doc.addCitation(citation);
             }
         }
         if (getAcks) {
-            List<Acknowledgment> acks = 
-                ackDAO.getAcknowledgments(doi, getContexts, getSource);
+            List<Acknowledgment> acks = this.ackDAO.getAcknowledgments(doi, getContexts, getSource);
             for (Acknowledgment ack : acks) {
                 doc.addAcknowledgment(ack);
             }
         }
         if (getKeywords) {
-            List<Keyword> keywords = keywordDAO.getKeywords(doi, getSource);
+            List<Keyword> keywords = this.keywordDAO.getKeywords(doi, getSource);
             for (Keyword keyword : keywords) {
                 doc.addKeyword(keyword);
             }
         }
         if (getTags) {
-            List<Tag> tags = tagDAO.getTags(doi);
+            List<Tag> tags = this.tagDAO.getTags(doi);
             doc.setTags(tags);
         }
 
         return doc;
-        
-    }  //- getDocumentFromDB
+
+    } // - getDocumentFromDB
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.logic.CSXOperations#getDocumentFromDB(java.lang.String, boolean, boolean)
+     *
+     * @see edu.psu.citeseerx.dao2.logic.CSXOperations#getDocumentFromDB(java.lang.String, boolean,
+     * boolean)
      */
     @Override
-    public Document getDocumentFromDB(String doi, boolean getContexts,
-            boolean getSource) throws DataAccessException {
+    public Document getDocumentFromDB(final String doi, final boolean getContexts, final boolean getSource)
+        throws DataAccessException
+    {
 
-        return getDocumentFromDB(doi, true, getContexts, getSource,
-                true, true, true);
+        return this.getDocumentFromDB(doi, true, getContexts, getSource, true, true, true);
 
-    }  //- getDocumentFromDB
+    } // - getDocumentFromDB
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.logic.CSXOperations#getDocumentFromDB(java.lang.String)
      */
     @Override
-    public Document getDocumentFromDB(String doi) throws DataAccessException {
-        
-        return getDocumentFromDB(doi, false, false, false, false, false, false);
-    } //- getDocumentFromDB
+    public Document getDocumentFromDB(final String doi)
+        throws DataAccessException
+    {
+
+        return this.getDocumentFromDB(doi, false, false, false, false, false, false);
+    } // - getDocumentFromDB
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.logic.CSXOperations#getDocumentFromXML(java.lang.String)
      */
     @Override
-    public Document getDocumentFromXML(String doi)
-    throws DataAccessException, IOException {
-        Document doc = docDAO.getDocument(doi, false);
+    public Document getDocumentFromXML(final String doi)
+        throws DataAccessException, IOException
+    {
+        Document doc = this.docDAO.getDocument(doi, false);
         String repID = doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY);
         String relPath = FileNamingUtils.buildXMLPath(doi);
-        return fileSysDAO.getDocFromXML(repID, relPath);
+        return this.fileSysDAO.getDocFromXML(repID, relPath);
 
-    }  //- getDocumentFromXML
+    } // - getDocumentFromXML
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.logic.CSXOperations#updateDocumentData(edu.psu.citeseerx.domain.Document)
+     *
+     * @see
+     * edu.psu.citeseerx.dao2.logic.CSXOperations#updateDocumentData(edu.psu.citeseerx.domain.Document
+     * )
      */
     @Override
-    public void updateDocumentData(Document doc)
-    throws DataAccessException, IOException {
-        updateDocumentData(doc, true, true, true, true);
-    } //- updateDocumentData
-    
+    public void updateDocumentData(final Document doc)
+        throws DataAccessException, IOException
+    {
+        this.updateDocumentData(doc, true, true, true, true);
+    } // - updateDocumentData
+
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.logic.CSXOperations#updateDocumentData(edu.psu.citeseerx.domain.Document, boolean, boolean, boolean, boolean)
+     *
+     * @see
+     * edu.psu.citeseerx.dao2.logic.CSXOperations#updateDocumentData(edu.psu.citeseerx.domain.Document
+     * , boolean, boolean, boolean, boolean)
      */
     @Override
-    public void updateDocumentData(Document doc, boolean updateAuthors,
-            boolean updateCitations,
-            boolean updateAcknowledgements, boolean updateKeywords)
-    throws DataAccessException, IOException {
-        
+    public void updateDocumentData(final Document doc, final boolean updateAuthors, final boolean updateCitations,
+            final boolean updateAcknowledgements, final boolean updateKeywords)
+        throws DataAccessException, IOException
+    {
+
         String doi = doc.getDatum(Document.DOI_KEY);
 
-        docDAO.updateDocument(doc);
-        //fileDAO.updateFileInfo(doi, doc.getFileInfo(), con);
+        this.docDAO.updateDocument(doc);
+        // fileDAO.updateFileInfo(doi, doc.getFileInfo(), con);
 
         if (updateAuthors) {
-            authDAO.deleteAuthors(doi);
-            insertAuthors(doi, doc.getAuthors());
+            this.authDAO.deleteAuthors(doi);
+            this.insertAuthors(doi, doc.getAuthors());
         }
 
         if (updateCitations) {
-            citeDAO.deleteCitations(doi);
-            insertCitations(doi, doc.getCitations());
+            this.citeDAO.deleteCitations(doi);
+            this.insertCitations(doi, doc.getCitations());
         }
 
         if (updateAcknowledgements) {
-            ackDAO.deleteAcknowledgments(doi);
-            insertAcknowledgments(doi, doc.getAcknowledgments());
+            this.ackDAO.deleteAcknowledgments(doi);
+            this.insertAcknowledgments(doi, doc.getAcknowledgments());
         }
-        
+
         if (updateKeywords) {
-            keywordDAO.deleteKeywords(doi);
-            insertKeywords(doi, doc.getKeywords());
+            this.keywordDAO.deleteKeywords(doi);
+            this.insertKeywords(doi, doc.getKeywords());
         }
 
-    }  //- updateDocumentData
-    
-    
+    } // - updateDocumentData
 
-    ///////////////////////////////////////////////////////
-    //  Acknowledgment DAO                               
-    ///////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////
+    // Acknowledgment DAO
+    // /////////////////////////////////////////////////////
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AckDAO#deleteAcknowledgment(java.lang.Long)
      */
     @Override
-    public void deleteAcknowledgment(Long ackID) throws DataAccessException {
-        ackDAO.deleteAcknowledgment(ackID);
-    }  //- deleteAcknowledgment
-    
+    public void deleteAcknowledgment(final Long ackID)
+        throws DataAccessException
+    {
+        this.ackDAO.deleteAcknowledgment(ackID);
+    } // - deleteAcknowledgment
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AckDAO#deleteAcknowledgments(java.lang.String)
      */
     @Override
-    public void deleteAcknowledgments(String doi) throws DataAccessException {
-        ackDAO.deleteAcknowledgments(doi);
-    }  //- deleteAcknowledgments
+    public void deleteAcknowledgments(final String doi)
+        throws DataAccessException
+    {
+        this.ackDAO.deleteAcknowledgments(doi);
+    } // - deleteAcknowledgments
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AckDAO#deleteAckContexts(java.lang.Long)
      */
     @Override
-    public void deleteAckContexts(Long ackID) throws DataAccessException {
-        ackDAO.deleteAckContexts(ackID);
-    }  //- deleteAckContexts
-
+    public void deleteAckContexts(final Long ackID)
+        throws DataAccessException
+    {
+        this.ackDAO.deleteAckContexts(ackID);
+    } // - deleteAckContexts
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AckDAO#getAcknowledgments(java.lang.String, boolean, boolean)
      */
     @Override
-    public List<Acknowledgment> getAcknowledgments(String doi, 
-            boolean getContexts, boolean getSource) throws DataAccessException {
-        return ackDAO.getAcknowledgments(doi, getContexts, getSource);
-    }  //- getAcknowledgments
-
+    public List<Acknowledgment> getAcknowledgments(final String doi, final boolean getContexts,
+            final boolean getSource)
+        throws DataAccessException
+    {
+        return this.ackDAO.getAcknowledgments(doi, getContexts, getSource);
+    } // - getAcknowledgments
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AckDAO#getAckContexts(java.lang.Long)
      */
     @Override
-    public List<String> getAckContexts(Long ackID) throws DataAccessException {
-        return ackDAO.getAckContexts(ackID);
-    }  //- getAckContexts
+    public List<String> getAckContexts(final Long ackID)
+        throws DataAccessException
+    {
+        return this.ackDAO.getAckContexts(ackID);
+    } // - getAckContexts
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.AckDAO#insertAcknowledgment(java.lang.String, edu.psu.citeseerx.domain.Acknowledgment)
+     *
+     * @see edu.psu.citeseerx.dao2.AckDAO#insertAcknowledgment(java.lang.String,
+     * edu.psu.citeseerx.domain.Acknowledgment)
      */
     @Override
-    public void insertAcknowledgment(String doi, Acknowledgment ack)
-    throws DataAccessException {
-        ackDAO.insertAcknowledgment(doi, ack);
-    }  //- insertAcknowledgment
+    public void insertAcknowledgment(final String doi, final Acknowledgment ack)
+        throws DataAccessException
+    {
+        this.ackDAO.insertAcknowledgment(doi, ack);
+    } // - insertAcknowledgment
 
     /**
-     * Insert each one of the given acknowledgments associating them to the
-     * given document identifier. 
+     * Insert each one of the given acknowledgments associating them to the given document
+     * identifier.
+     *
      * @param doi
      * @param acks
      * @throws DataAccessException
      */
-    private void insertAcknowledgments(String doi, List<Acknowledgment> acks)
-    throws DataAccessException {
+    private void insertAcknowledgments(final String doi, final List<Acknowledgment> acks)
+        throws DataAccessException
+    {
         for (Acknowledgment ack : acks) {
-            insertAcknowledgment(doi, ack);
+            this.insertAcknowledgment(doi, ack);
         }
-    } //- insertAcknowledgments
-    
+    } // - insertAcknowledgments
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AckDAO#insertAckContexts(java.lang.Long, java.util.List)
      */
     @Override
-    public void insertAckContexts(Long ackID, List<String> contexts)
-    throws DataAccessException {
-        ackDAO.insertAckContexts(ackID, contexts);
-    }  //- insertAckContexts
-
-
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.AckDAO#setAckCluster(edu.psu.citeseerx.domain.Acknowledgment, java.lang.Long)
-     */
-    @Override
-    public void setAckCluster(Acknowledgment ack, Long clusterID)
-    throws DataAccessException {
-        ackDAO.setAckCluster(ack, clusterID);
-    }  //- setAckCluster
-
+    public void insertAckContexts(final Long ackID, final List<String> contexts)
+        throws DataAccessException
+    {
+        this.ackDAO.insertAckContexts(ackID, contexts);
+    } // - insertAckContexts
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.AckDAO#updateAcknowledgment(edu.psu.citeseerx.domain.Acknowledgment)
+     *
+     * @see edu.psu.citeseerx.dao2.AckDAO#setAckCluster(edu.psu.citeseerx.domain.Acknowledgment,
+     * java.lang.Long)
      */
     @Override
-    public void updateAcknowledgment(Acknowledgment ack)
-    throws DataAccessException {
-        ackDAO.updateAcknowledgment(ack);
-    }  //- updateAcknowledgment
+    public void setAckCluster(final Acknowledgment ack, final Long clusterID)
+        throws DataAccessException
+    {
+        this.ackDAO.setAckCluster(ack, clusterID);
+    } // - setAckCluster
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * edu.psu.citeseerx.dao2.AckDAO#updateAcknowledgment(edu.psu.citeseerx.domain.Acknowledgment)
+     */
+    @Override
+    public void updateAcknowledgment(final Acknowledgment ack)
+        throws DataAccessException
+    {
+        this.ackDAO.updateAcknowledgment(ack);
+    } // - updateAcknowledgment
 
-    ///////////////////////////////////////////////////////
-    //  Author DAO                               
-    ///////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////
+    // Author DAO
+    // /////////////////////////////////////////////////////
 
-    
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AuthorDAO#getDocAuthors(java.lang.String, boolean)
      */
     @Override
-    public List<Author> getDocAuthors(String docID, boolean getSource)
-            throws DataAccessException {
-        return authDAO.getDocAuthors(docID, getSource);
-    }  //- getdocAuthors
-    
+    public List<Author> getDocAuthors(final String docID, final boolean getSource)
+        throws DataAccessException
+    {
+        return this.authDAO.getDocAuthors(docID, getSource);
+    } // - getdocAuthors
+
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.AuthorDAO#insertAuthor(java.lang.String, edu.psu.citeseerx.domain.Author)
+     *
+     * @see edu.psu.citeseerx.dao2.AuthorDAO#insertAuthor(java.lang.String,
+     * edu.psu.citeseerx.domain.Author)
      */
     @Override
-    public void insertAuthor(String docID, Author auth)
-    throws DataAccessException {
-        authDAO.insertAuthor(docID, auth);
-    }  //- insertAuthor
+    public void insertAuthor(final String docID, final Author auth)
+        throws DataAccessException
+    {
+        this.authDAO.insertAuthor(docID, auth);
+    } // - insertAuthor
 
     /**
-     * Stores the given authors associating them to the given document 
-     * identifier. 
+     * Stores the given authors associating them to the given document identifier.
+     *
      * @param doi
      * @param authors
      * @throws DataAccessException
      */
-    private void insertAuthors(String doi, List<Author> authors) 
-    throws DataAccessException {
+    private void insertAuthors(final String doi, final List<Author> authors)
+        throws DataAccessException
+    {
         for (Author author : authors) {
-            insertAuthor(doi, author);
+            this.insertAuthor(doi, author);
         }
-    } //- insertAuthors
-    
+    } // - insertAuthors
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AuthorDAO#updateAuthor(edu.psu.citeseerx.domain.Author)
      */
     @Override
-    public void updateAuthor(Author auth) throws DataAccessException {
-        authDAO.updateAuthor(auth);
-    }  //- updateAuthor
+    public void updateAuthor(final Author auth)
+        throws DataAccessException
+    {
+        this.authDAO.updateAuthor(auth);
+    } // - updateAuthor
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.AuthorDAO#setAuthCluster(edu.psu.citeseerx.domain.Author, java.lang.Long)
+     *
+     * @see edu.psu.citeseerx.dao2.AuthorDAO#setAuthCluster(edu.psu.citeseerx.domain.Author,
+     * java.lang.Long)
      */
     @Override
-    public void setAuthCluster(Author auth, Long clusterID)
-    throws DataAccessException {
-        authDAO.setAuthCluster(auth, clusterID);
-    }  //- setAuthCluster
+    public void setAuthCluster(final Author auth, final Long clusterID)
+        throws DataAccessException
+    {
+        this.authDAO.setAuthCluster(auth, clusterID);
+    } // - setAuthCluster
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AuthorDAO#deleteAuthors(java.lang.String)
      */
     @Override
-    public void deleteAuthors(String docID) throws DataAccessException {
-        authDAO.deleteAuthors(docID);
-    }  //- deleteAuthors
+    public void deleteAuthors(final String docID)
+        throws DataAccessException
+    {
+        this.authDAO.deleteAuthors(docID);
+    } // - deleteAuthors
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AuthorDAO#deleteAuthor(java.lang.Long)
      */
     @Override
-    public void deleteAuthor(Long authorID) throws DataAccessException {
-        authDAO.deleteAuthor(authorID);
-    }  //- deleteAuthor
+    public void deleteAuthor(final Long authorID)
+        throws DataAccessException
+    {
+        this.authDAO.deleteAuthor(authorID);
+    } // - deleteAuthor
 
+    // /////////////////////////////////////////////////////
+    // Citation DAO
+    // /////////////////////////////////////////////////////
 
-
-    ///////////////////////////////////////////////////////
-    //  Citation DAO                               
-    ///////////////////////////////////////////////////////
-
-
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.CitationDAO#getCitations(java.lang.String, boolean)
      */
     @Override
-    public List<Citation> getCitations(String docID, boolean getContexts)
-            throws DataAccessException {
-        return citeDAO.getCitations(docID, getContexts);
-    }  //- getCitations    
-    
+    public List<Citation> getCitations(final String docID, final boolean getContexts)
+        throws DataAccessException
+    {
+        return this.citeDAO.getCitations(docID, getContexts);
+    } // - getCitations
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.CitationDAO#getCitations(long, int)
      */
     @Override
-    public List<Citation> getCitations(long startID, int n)
-    throws DataAccessException {
-        return citeDAO.getCitations(startID, n);
-    }  //- getCitations
+    public List<Citation> getCitations(final long startID, final int n)
+        throws DataAccessException
+    {
+        return this.citeDAO.getCitations(startID, n);
+    } // - getCitations
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.CitationDAO#getCitationsForCluster(java.lang.Long)
      */
     @Override
-    public List<Citation> getCitationsForCluster(Long clusterid)
-    throws DataAccessException {
-        return citeDAO.getCitationsForCluster(clusterid);
-    }  //- getCitationsForCluster
-    
+    public List<Citation> getCitationsForCluster(final Long clusterid)
+        throws DataAccessException
+    {
+        return this.citeDAO.getCitationsForCluster(clusterid);
+    } // - getCitationsForCluster
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.CitationDAO#getCitation(long)
      */
     @Override
-    public Citation getCitation(long id) throws DataAccessException {
-        return citeDAO.getCitation(id);
-    }  //- getCitation
+    public Citation getCitation(final long id)
+        throws DataAccessException
+    {
+        return this.citeDAO.getCitation(id);
+    } // - getCitation
 
     /**
      * Stores all the given citations associating them to the given document
+     *
      * @param DOI
      * @param citations
      * @throws DataAccessException
      */
-    private void insertCitations(String DOI, List<Citation> citations)
-    throws DataAccessException {
+    private void insertCitations(final String DOI, final List<Citation> citations)
+        throws DataAccessException
+    {
         for (Citation citation : citations) {
-            citeDAO.insertCitation(DOI, citation);
+            this.citeDAO.insertCitation(DOI, citation);
         }
-    }  //- insertCitations
-    
+    } // - insertCitations
+
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.CitationDAO#insertCitation(java.lang.String, edu.psu.citeseerx.domain.Citation)
+     *
+     * @see edu.psu.citeseerx.dao2.CitationDAO#insertCitation(java.lang.String,
+     * edu.psu.citeseerx.domain.Citation)
      */
     @Override
-    public void insertCitation(String DOI, Citation citation)
-    throws DataAccessException {
-        citeDAO.insertCitation(DOI, citation);
-    } //- insertCitation
-
+    public void insertCitation(final String DOI, final Citation citation)
+        throws DataAccessException
+    {
+        this.citeDAO.insertCitation(DOI, citation);
+    } // - insertCitation
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.CitationDAO#getCiteContexts(java.lang.Long)
      */
     @Override
-    public List<String> getCiteContexts(Long citationID)
-    throws DataAccessException {
-        return citeDAO.getCiteContexts(citationID);
-    }  //- getCitationContexts
+    public List<String> getCiteContexts(final Long citationID)
+        throws DataAccessException
+    {
+        return this.citeDAO.getCiteContexts(citationID);
+    } // - getCitationContexts
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.CitationDAO#insertCiteContexts(java.lang.Long, java.util.List)
      */
     @Override
-    public void insertCiteContexts(Long citationID, List<String> contexts)
-    throws DataAccessException {
-        citeDAO.insertCiteContexts(citationID, contexts);
-    }  //- insertCitationContexts
+    public void insertCiteContexts(final Long citationID, final List<String> contexts)
+        throws DataAccessException
+    {
+        this.citeDAO.insertCiteContexts(citationID, contexts);
+    } // - insertCitationContexts
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.CitationDAO#setCiteCluster(edu.psu.citeseerx.domain.Citation, java.lang.Long)
+     *
+     * @see edu.psu.citeseerx.dao2.CitationDAO#setCiteCluster(edu.psu.citeseerx.domain.Citation,
+     * java.lang.Long)
      */
     @Override
-    public void setCiteCluster(Citation citation, Long clusterID)
-    throws DataAccessException {
-        citeDAO.setCiteCluster(citation, clusterID);
-    }  //- setCitationCluster
+    public void setCiteCluster(final Citation citation, final Long clusterID)
+        throws DataAccessException
+    {
+        this.citeDAO.setCiteCluster(citation, clusterID);
+    } // - setCitationCluster
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.CitationDAO#deleteCitations(java.lang.String)
      */
     @Override
-    public void deleteCitations(String DOI) throws DataAccessException {
-        citeDAO.deleteCitations(DOI);
-    }  //- deleteCitations
+    public void deleteCitations(final String DOI)
+        throws DataAccessException
+    {
+        this.citeDAO.deleteCitations(DOI);
+    } // - deleteCitations
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.CitationDAO#deleteCitation(java.lang.Long)
      */
     @Override
-    public void deleteCitation(Long citationID) throws DataAccessException {
-        citeDAO.deleteCitation(citationID);
-    }  //- deleteCitation
+    public void deleteCitation(final Long citationID)
+        throws DataAccessException
+    {
+        this.citeDAO.deleteCitation(citationID);
+    } // - deleteCitation
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.CitationDAO#deleteCiteContexts(java.lang.Long)
      */
     @Override
-    public void deleteCiteContexts(Long citationID)
-    throws DataAccessException {
-        citeDAO.deleteCiteContexts(citationID);
-    }  //- deleteCitationContexts
-    
-    /* (non-Javadoc)
-	 * @see edu.psu.citeseerx.dao2.CitationDAO#getNumberOfCitationsRecords()
-	 */
-	public Integer getNumberOfCitationsRecords() throws DataAccessException {
-		return citeDAO.getNumberOfCitationsRecords();
-	} //- getNumberOfCitationsRecords
+    public void deleteCiteContexts(final Long citationID)
+        throws DataAccessException
+    {
+        this.citeDAO.deleteCiteContexts(citationID);
+    } // - deleteCitationContexts
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.CitationDAO#getNumberOfCitationsRecords()
+     */
+    @Override
+    public Integer getNumberOfCitationsRecords()
+        throws DataAccessException
+    {
+        return this.citeDAO.getNumberOfCitationsRecords();
+    } // - getNumberOfCitationsRecords
 
-    ///////////////////////////////////////////////////////
-    //  Document DAO                               
-    ///////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////
+    // Document DAO
+    // /////////////////////////////////////////////////////
 
-	/* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.DocumentDAO#getDocument(java.lang.String, boolean)
      */
     @Override
-    public Document getDocument(String docID, boolean getSource)
-            throws DataAccessException {
-        return docDAO.getDocument(docID, getSource);
-    } //- getDocument
-    
+    public Document getDocument(final String docID, final boolean getSource)
+        throws DataAccessException
+    {
+        return this.docDAO.getDocument(docID, getSource);
+    } // - getDocument
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.DocumentDAO#updateDocument(edu.psu.citeseerx.domain.Document)
      */
     @Override
-    public void updateDocument(Document doc) throws DataAccessException {
-        docDAO.updateDocument(doc);
-    } //- updateDocument
-    
+    public void updateDocument(final Document doc)
+        throws DataAccessException
+    {
+        this.docDAO.updateDocument(doc);
+    } // - updateDocument
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.DocumentDAO#insertDocument(edu.psu.citeseerx.domain.Document)
      */
     @Override
-    public void insertDocument(Document doc) throws DataAccessException {
-        docDAO.insertDocument(doc);
-    } //- insertDocument
-    
+    public void insertDocument(final Document doc)
+        throws DataAccessException
+    {
+        this.docDAO.insertDocument(doc);
+    } // - insertDocument
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.DocumentDAO#insertDocumentSrc(edu.psu.citeseerx.domain.Document)
      */
     @Override
-    public void insertDocumentSrc(Document doc) throws DataAccessException {
-        docDAO.insertDocumentSrc(doc);
-    } //- insertDocumentSrc
-    
+    public void insertDocumentSrc(final Document doc)
+        throws DataAccessException
+    {
+        this.docDAO.insertDocumentSrc(doc);
+    } // - insertDocumentSrc
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.DocumentDAO#setDocState(edu.psu.citeseerx.domain.Document, int)
      */
     @Override
-    public void setDocState(Document doc, int toState)
-    throws DataAccessException {
-        docDAO.setDocState(doc, toState);
-    }  //- setDocState
+    public void setDocState(final Document doc, final int toState)
+        throws DataAccessException
+    {
+        this.docDAO.setDocState(doc, toState);
+    } // - setDocState
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.DocumentDAO#setDocCluster(edu.psu.citeseerx.domain.Document, java.lang.Long)
+     *
+     * @see edu.psu.citeseerx.dao2.DocumentDAO#setDocCluster(edu.psu.citeseerx.domain.Document,
+     * java.lang.Long)
      */
     @Override
-    public void setDocCluster(Document doc, Long clusterID)
-    throws DataAccessException {
-        docDAO.setDocCluster(doc, clusterID);
-    }  //- setDocCluster
-    
+    public void setDocCluster(final Document doc, final Long clusterID)
+        throws DataAccessException
+    {
+        this.docDAO.setDocCluster(doc, clusterID);
+    } // - setDocCluster
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.DocumentDAO#setDocNcites(edu.psu.citeseerx.domain.Document, int)
      */
     @Override
-    public void setDocNcites(Document doc, int ncites)
-    throws DataAccessException {
-        docDAO.setDocNcites(doc, ncites);
-    }  //- setNcites
+    public void setDocNcites(final Document doc, final int ncites)
+        throws DataAccessException
+    {
+        this.docDAO.setDocNcites(doc, ncites);
+    } // - setNcites
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.DocumentDAO#getNumberOfDocumentRecords()
      */
     @Override
-    public Integer getNumberOfDocumentRecords() throws DataAccessException {
-        return docDAO.getNumberOfDocumentRecords();
-    }  //- getNumberOfDocumentRecords
-    
+    public Integer getNumberOfDocumentRecords()
+        throws DataAccessException
+    {
+        return this.docDAO.getNumberOfDocumentRecords();
+    } // - getNumberOfDocumentRecords
+
+    @Override
+    public List<String> getAllDOIs()
+        throws DataAccessException
+    {
+        return this.docDAO.getAllDOIs();
+    }
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.DocumentDAO#getDOIs(java.lang.String, int)
      */
     @Override
-    public List<String> getDOIs(String start, int amount)
-    throws DataAccessException {
-        return docDAO.getDOIs(start, amount);
-    }  //- getDOIs
+    public List<String> getDOIs(final String start, final int amount)
+        throws DataAccessException
+    {
+        return this.docDAO.getDOIs(start, amount);
+    } // - getDOIs
 
-    /* (non-Javadoc)
-	 * @see edu.psu.citeseerx.dao2.DocumentDAO#getSetDOIs(java.util.Date, java.util.Date, java.lang.String, int)
-	 */
-	public List<DOIInfo> getSetDOIs(Date start, Date end, String prev, 
-			int amount) throws DataAccessException {
-		return docDAO.getSetDOIs(start, end, prev, amount);
-	} //- getSetDOIs
-
-
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.DocumentDAO#getSetDOICount(java.util.Date, java.util.Date, java.lang.String)
+    /*
+     * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.DocumentDAO#getSetDOIs(java.util.Date, java.util.Date,
+     * java.lang.String, int)
      */
-    public Integer getSetDOICount(Date start, Date end, String prev) 
-    throws DataAccessException {
-    	return docDAO.getSetDOICount(start, end, prev);
-    } //- getSetDOICount
+    @Override
+    public List<DOIInfo> getSetDOIs(final Date start, final Date end, final String prev, final int amount)
+        throws DataAccessException
+    {
+        return this.docDAO.getSetDOIs(start, end, prev, amount);
+    } // - getSetDOIs
 
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.DocumentDAO#getCrawledDOIs(java.util.Date, java.util.Date, java.lang.String, int)
+    /*
+     * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.DocumentDAO#getSetDOICount(java.util.Date, java.util.Date,
+     * java.lang.String)
      */
-    public List<String> getCrawledDOIs(Date start, Date end, String lastDOI,
-            int amount) throws DataAccessException {
-        return docDAO.getCrawledDOIs(start, end, lastDOI, amount);
-    } //- getCrawledDOIs
-    
-    /* (non-Javadoc)
+    @Override
+    public Integer getSetDOICount(final Date start, final Date end, final String prev)
+        throws DataAccessException
+    {
+        return this.docDAO.getSetDOICount(start, end, prev);
+    } // - getSetDOICount
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.DocumentDAO#getCrawledDOIs(java.util.Date, java.util.Date,
+     * java.lang.String, int)
+     */
+    @Override
+    public List<String> getCrawledDOIs(final Date start, final Date end, final String lastDOI, final int amount)
+        throws DataAccessException
+    {
+        return this.docDAO.getCrawledDOIs(start, end, lastDOI, amount);
+    } // - getCrawledDOIs
+
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.DocumentDAO#getLastDocuments(java.lang.String, int)
      */
-    public List<String> getLastDocuments(String lastDOI, int amount)
-            throws DataAccessException {
-        return docDAO.getLastDocuments(lastDOI, amount);
-    } //- getLastDocuments
+    @Override
+    public List<String> getLastDocuments(final String lastDOI, final int amount)
+        throws DataAccessException
+    {
+        return this.docDAO.getLastDocuments(lastDOI, amount);
+    } // - getLastDocuments
 
-    ///////////////////////////////////////////////////////
-    //  File DAO                               
-    ///////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////
+    // File DAO
+    // /////////////////////////////////////////////////////
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileDAO#insertChecksum(edu.psu.citeseerx.domain.CheckSum)
      */
     @Override
-    public void insertChecksum(CheckSum checksum) {
-        fileDAO.insertChecksum(checksum);
-    }  //- insertChecksum
-    
+    public void insertChecksum(final CheckSum checksum)
+    {
+        this.fileDAO.insertChecksum(checksum);
+    } // - insertChecksum
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileDAO#insertChecksums(java.lang.String, java.util.List)
      */
     @Override
-    public void insertChecksums(String doi, List<CheckSum> checksums) {
-        fileDAO.insertChecksums(doi, checksums);
-    }  //- insertChecksums
+    public void insertChecksums(final String doi, final List<CheckSum> checksums)
+    {
+        this.fileDAO.insertChecksums(doi, checksums);
+    } // - insertChecksums
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileDAO#getChecksums(java.lang.String)
      */
     @Override
-    public List<CheckSum> getChecksums(String sha1) throws DataAccessException {
-        return fileDAO.getChecksums(sha1);
-    }  //- getChecksums
-    
+    public List<CheckSum> getChecksums(final String sha1)
+        throws DataAccessException
+    {
+        return this.fileDAO.getChecksums(sha1);
+    } // - getChecksums
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileDAO#deleteChecksums(java.lang.String)
      */
     @Override
-    public void deleteChecksums(String doi) throws DataAccessException {
-        fileDAO.deleteChecksums(doi);
+    public void deleteChecksums(final String doi)
+        throws DataAccessException
+    {
+        this.fileDAO.deleteChecksums(doi);
     }
-    
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileDAO#updateChecksums(java.lang.String, java.util.List)
      */
     @Override
-    public void updateChecksums(String doi, List<CheckSum> checksums)
-    throws DataAccessException {
-        fileDAO.updateChecksums(doi, checksums);
-    } //- updateChecksums
-    
+    public void updateChecksums(final String doi, final List<CheckSum> checksums)
+        throws DataAccessException
+    {
+        this.fileDAO.updateChecksums(doi, checksums);
+    } // - updateChecksums
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileDAO#getChecksumsForDocument(java.lang.String)
      */
     @Override
-    public List<CheckSum> getChecksumsForDocument(String doi) {
-        return fileDAO.getChecksumsForDocument(doi);
-    } //- getChecksumsForDocument
+    public List<CheckSum> getChecksumsForDocument(final String doi)
+    {
+        return this.fileDAO.getChecksumsForDocument(doi);
+    } // - getChecksumsForDocument
 
-
-    ///////////////////////////////////////////////////////
-    //  Keyword DAO                               
-    ///////////////////////////////////////////////////////
-
-
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.KeywordDAO#getKeywords(java.lang.String, boolean)
-     */
-    @Override
-    public List<Keyword> getKeywords(String doi, boolean getSource)
-            throws DataAccessException {
-        return keywordDAO.getKeywords(doi, getSource);
-    }  //- getKeywords
+    // /////////////////////////////////////////////////////
+    // Keyword DAO
+    // /////////////////////////////////////////////////////
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.KeywordDAO#insertKeyword(java.lang.String, edu.psu.citeseerx.domain.Keyword)
+     *
+     * @see edu.psu.citeseerx.dao2.KeywordDAO#getKeywords(java.lang.String, boolean)
      */
     @Override
-    public void insertKeyword(String docID, Keyword keyword)
-    throws DataAccessException {
-        keywordDAO.insertKeyword(docID, keyword);
-    }  //- insertKeywords
+    public List<Keyword> getKeywords(final String doi, final boolean getSource)
+        throws DataAccessException
+    {
+        return this.keywordDAO.getKeywords(doi, getSource);
+    } // - getKeywords
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.KeywordDAO#insertKeyword(java.lang.String,
+     * edu.psu.citeseerx.domain.Keyword)
+     */
+    @Override
+    public void insertKeyword(final String docID, final Keyword keyword)
+        throws DataAccessException
+    {
+        this.keywordDAO.insertKeyword(docID, keyword);
+    } // - insertKeywords
 
     /**
-     * Inserts the given keywords associating them to the given document
-     * identifier.
+     * Inserts the given keywords associating them to the given document identifier.
+     *
      * @param docID
      * @param keywords
      * @throws DataAccessException
      */
-    private void insertKeywords(String docID, List<Keyword> keywords)
-    throws DataAccessException {
+    private void insertKeywords(final String docID, final List<Keyword> keywords)
+        throws DataAccessException
+    {
         for (Keyword keyword : keywords) {
-            insertKeyword(docID, keyword);
+            this.insertKeyword(docID, keyword);
         }
-    } //- insertKeywords
+    } // - insertKeywords
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.KeywordDAO#updateKeyword(java.lang.String, edu.psu.citeseerx.domain.Keyword)
+     *
+     * @see edu.psu.citeseerx.dao2.KeywordDAO#updateKeyword(java.lang.String,
+     * edu.psu.citeseerx.domain.Keyword)
      */
     @Override
-    public void updateKeyword(String docID, Keyword keyword)
-    throws DataAccessException {
-        keywordDAO.updateKeyword(docID, keyword);
-    }  //- updateKeyword
-    
+    public void updateKeyword(final String docID, final Keyword keyword)
+        throws DataAccessException
+    {
+        this.keywordDAO.updateKeyword(docID, keyword);
+    } // - updateKeyword
+
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.KeywordDAO#deleteKeyword(java.lang.String, edu.psu.citeseerx.domain.Keyword)
+     *
+     * @see edu.psu.citeseerx.dao2.KeywordDAO#deleteKeyword(java.lang.String,
+     * edu.psu.citeseerx.domain.Keyword)
      */
     @Override
-    public void deleteKeyword(String docID, Keyword keyword)
-    throws DataAccessException {
-        keywordDAO.deleteKeyword(docID, keyword);
-    }  //- deleteKeyword
-    
+    public void deleteKeyword(final String docID, final Keyword keyword)
+        throws DataAccessException
+    {
+        this.keywordDAO.deleteKeyword(docID, keyword);
+    } // - deleteKeyword
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.KeywordDAO#deleteKeywords(java.lang.String)
      */
     @Override
-    public void deleteKeywords(String docID) throws DataAccessException {
-        keywordDAO.deleteKeywords(docID);
-    }  //- deleteKeywords
+    public void deleteKeywords(final String docID)
+        throws DataAccessException
+    {
+        this.keywordDAO.deleteKeywords(docID);
+    } // - deleteKeywords
 
+    // /////////////////////////////////////////////////////
+    // UserCorrection DAO
+    // /////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////
-    //  UserCorrection DAO                               
-    ///////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////
+    // Version DAO
+    // /////////////////////////////////////////////////////
 
-
-
-    ///////////////////////////////////////////////////////
-    //  Version DAO                               
-    ///////////////////////////////////////////////////////
-
-
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.VersionDAO#setVersion(java.lang.String, int)
      */
     @Override
-    public void setVersion(String doi, int version) throws DataAccessException,
-            IOException {
-        Document doc = fileSysDAO.getDocVersion(doi, version);
-        updateDocumentData(doc);
-        versionDAO.deprecateVersionsAfter(doi, doc.getVersion());
-        
-    }  //- setVersion
+    public void setVersion(final String doi, final int version)
+        throws DataAccessException, IOException
+    {
+        Document doc = this.fileSysDAO.getDocVersion(doi, version);
+        this.updateDocumentData(doc);
+        this.versionDAO.deprecateVersionsAfter(doi, doc.getVersion());
+
+    } // - setVersion
 
     /*
-     * NOTE:
-     * Why this one is not in the interface?
+     * NOTE: Why this one is not in the interface?
      */
-    public void setVersion(String doi, String name)
-    throws DataAccessException, IOException {
+    public void setVersion(final String doi, final String name)
+        throws DataAccessException, IOException
+    {
 
-        Document doc = fileSysDAO.getDocVersion(doi, name);
-        versionDAO.deprecateVersionsAfter(doi, doc.getVersion());
-        updateDocumentData(doc);
-        
-    }  //- setVersion
+        Document doc = this.fileSysDAO.getDocVersion(doi, name);
+        this.versionDAO.deprecateVersionsAfter(doi, doc.getVersion());
+        this.updateDocumentData(doc);
+
+    } // - setVersion
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.VersionDAO#insertVersion(edu.psu.citeseerx.domain.Document)
      */
     @Override
-    public boolean insertVersion(Document doc)
-    throws DataAccessException, IOException {
-        
-        versionDAO.insertVersion(doc);
-        fileSysDAO.writeVersion(doc);
+    public boolean insertVersion(final Document doc)
+        throws DataAccessException, IOException
+    {
+
+        this.versionDAO.insertVersion(doc);
+        this.fileSysDAO.writeVersion(doc);
         return true;
-        
-    }  //- createNewVersion
-    
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.VersionDAO#setVersionName(java.lang.String, int, java.lang.String)
-     */
-    @Override
-    public void setVersionName(String doi, int version, String name)
-    throws DataAccessException {
-        versionDAO.setVersionName(doi, version, name);
-    }  //- setVersionName
+
+    } // - createNewVersion
 
     /*
      * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.VersionDAO#setVersionName(java.lang.String, int,
+     * java.lang.String)
+     */
+    @Override
+    public void setVersionName(final String doi, final int version, final String name)
+        throws DataAccessException
+    {
+        this.versionDAO.setVersionName(doi, version, name);
+    } // - setVersionName
+
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.VersionDAO#setVersionSpam(java.lang.String, int, boolean)
      */
     @Override
-    public void setVersionSpam(String doi, int version, boolean isSpam)
-    throws DataAccessException {
-        versionDAO.setVersionSpam(doi, version, isSpam);
-    }  //- setSpam
-    
+    public void setVersionSpam(final String doi, final int version, final boolean isSpam)
+        throws DataAccessException
+    {
+        this.versionDAO.setVersionSpam(doi, version, isSpam);
+    } // - setSpam
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.VersionDAO#deprecateVersion(java.lang.String, int)
      */
     @Override
-    public void deprecateVersion(String doi, int version)
-    throws DataAccessException {
-        versionDAO.deprecateVersion(doi, version);
-    } //- deprecateVersion
-    
+    public void deprecateVersion(final String doi, final int version)
+        throws DataAccessException
+    {
+        this.versionDAO.deprecateVersion(doi, version);
+    } // - deprecateVersion
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.VersionDAO#deprecateVersionsAfter(java.lang.String, int)
      */
     @Override
-    public void deprecateVersionsAfter(String doi, int version)
-    throws DataAccessException {
-        versionDAO.deprecateVersionsAfter(doi, version);
-    } //- deprecateVersionsAfter
-    
+    public void deprecateVersionsAfter(final String doi, final int version)
+        throws DataAccessException
+    {
+        this.versionDAO.deprecateVersionsAfter(doi, version);
+    } // - deprecateVersionsAfter
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.VersionDAO#createNewVersion(edu.psu.citeseerx.domain.Document)
      */
     @Override
-    public void createNewVersion(Document doc) throws DataAccessException {
-        versionDAO.createNewVersion(doc);
-    } //- createNewVersion
-    
+    public void createNewVersion(final Document doc)
+        throws DataAccessException
+    {
+        this.versionDAO.createNewVersion(doc);
+    } // - createNewVersion
+
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.VersionDAO#insertCorrection(java.lang.String, java.lang.String, int)
+     *
+     * @see edu.psu.citeseerx.dao2.VersionDAO#insertCorrection(java.lang.String, java.lang.String,
+     * int)
      */
     @Override
-    public void insertCorrection(String userid, String paperid, int version)
-    throws DataAccessException {
-        versionDAO.insertCorrection(userid, paperid, version);
-    } //- createNewVersion
-    
+    public void insertCorrection(final String userid, final String paperid, final int version)
+        throws DataAccessException
+    {
+        this.versionDAO.insertCorrection(userid, paperid, version);
+    } // - createNewVersion
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.VersionDAO#getCorrector(java.lang.String, int)
      */
     @Override
-    public String getCorrector(String paperid, int version)
-    throws DataAccessException {
-        return versionDAO.getCorrector(paperid, version);
-    } //- createNewVersion
+    public String getCorrector(final String paperid, final int version)
+        throws DataAccessException
+    {
+        return this.versionDAO.getCorrector(paperid, version);
+    } // - createNewVersion
 
-
-    ///////////////////////////////////////////////////////
-    //  FileSys DAO                               
-    ///////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////
+    // FileSys DAO
+    // /////////////////////////////////////////////////////
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#getDocVersion(java.lang.String, int)
      */
     @Override
-    public Document getDocVersion(String doi, int version)
-    throws DataAccessException, IOException {
-        return fileSysDAO.getDocVersion(doi, version);
-    }  //- getDocVersion
+    public Document getDocVersion(final String doi, final int version)
+        throws DataAccessException, IOException
+    {
+        return this.fileSysDAO.getDocVersion(doi, version);
+    } // - getDocVersion
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#getDocVersion(java.lang.String, java.lang.String)
      */
     @Override
-    public Document getDocVersion(String doi, String name)
-    throws DataAccessException, IOException {
-        return fileSysDAO.getDocVersion(doi, name);
-    }  //- getDocVersion
-    
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getFileInputStream(java.lang.String, java.lang.String, java.lang.String)
-     */
-    @Override
-    public FileInputStream getFileInputStream(String doi, String repID,
-            String type) throws IOException {
-        return fileSysDAO.getFileInputStream(doi, repID, type);
-    } //- getFileInputStream
-    
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getPdfReader(java.lang.String, java.lang.String)
-     */
-    public PdfReader getPdfReader(String doi, String repID)
-            throws IOException {
-        return fileSysDAO.getPdfReader(doi, repID);
-    } //- getPdfReader
+    public Document getDocVersion(final String doi, final String name)
+        throws DataAccessException, IOException
+    {
+        return this.fileSysDAO.getDocVersion(doi, name);
+    } // - getDocVersion
 
     /*
      * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.FileSysDAO#getFileInputStream(java.lang.String, java.lang.String,
+     * java.lang.String)
+     */
+    @Override
+    public FileInputStream getFileInputStream(final String doi, final String repID, final String type)
+        throws IOException
+    {
+        return this.fileSysDAO.getFileInputStream(doi, repID, type);
+    } // - getFileInputStream
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.FileSysDAO#getPdfReader(java.lang.String, java.lang.String)
+     */
+    @Override
+    public PdfReader getPdfReader(final String doi, final String repID)
+        throws IOException
+    {
+        return this.fileSysDAO.getPdfReader(doi, repID);
+    } // - getPdfReader
+
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#writeXML(edu.psu.citeseerx.domain.Document)
      */
     @Override
-    public void writeXML(Document doc) throws IOException {
-        fileSysDAO.writeXML(doc);
-    } //- writeXML
-    
+    public void writeXML(final Document doc)
+        throws IOException
+    {
+        this.fileSysDAO.writeXML(doc);
+    } // - writeXML
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#writeVersion(edu.psu.citeseerx.domain.Document)
      */
     @Override
-    public void writeVersion(Document doc) throws IOException {
-        fileSysDAO.writeVersion(doc);
-    } //- writeVersion
-    
+    public void writeVersion(final Document doc)
+        throws IOException
+    {
+        this.fileSysDAO.writeVersion(doc);
+    } // - writeVersion
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#getDocFromXML(java.lang.String, java.lang.String)
      */
     @Override
-    public Document getDocFromXML(String repID, String relPath)
-    throws IOException {
-        return fileSysDAO.getDocFromXML(repID, relPath);
-    } //- getDocFromXML
-    
+    public Document getDocFromXML(final String repID, final String relPath)
+        throws IOException
+    {
+        return this.fileSysDAO.getDocFromXML(repID, relPath);
+    } // - getDocFromXML
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#getFileTypes(java.lang.String, java.lang.String)
      */
     @Override
-    public List<String> getFileTypes(String doi, String repID)
-    throws IOException {
-        return fileSysDAO.getFileTypes(doi, repID);
-    } //- getFileTypes
+    public List<String> getFileTypes(final String doi, final String repID)
+        throws IOException
+    {
+        return this.fileSysDAO.getFileTypes(doi, repID);
+    } // - getFileTypes
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#getRepositoryID(java.lang.String)
      */
     @Override
-    public String getRepositoryID(String doi) {
-        return fileSysDAO.getRepositoryID(doi);
-    } //- getRepositoryID
-    
-    ///////////////////////////////////////////////////////
-    //  Hub DAO                               
-    ///////////////////////////////////////////////////////
+    public String getRepositoryID(final String doi)
+    {
+        return this.fileSysDAO.getRepositoryID(doi);
+    } // - getRepositoryID
+
+    // /////////////////////////////////////////////////////
+    // Hub DAO
+    // /////////////////////////////////////////////////////
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.HubDAO#insertHub(edu.psu.citeseerx.domain.Hub)
      */
     @Override
-    public long insertHub(Hub hub) throws DataAccessException {
-        Hub existingHub = hubDAO.getHub(hub.getUrl());
-        if (existingHub == null) {
-            return hubDAO.insertHub(hub);
-        } else {
-            hubDAO.updateHub(hub);
+    public long insertHub(final Hub hub)
+        throws DataAccessException
+    {
+        Hub existingHub = this.hubDAO.getHub(hub.getUrl());
+        if (existingHub == null)
+            return this.hubDAO.insertHub(hub);
+        else {
+            this.hubDAO.updateHub(hub);
             return 0;
         }
-    }  //- insertHub
-    
+    } // - insertHub
+
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.HubDAO#addHubMapping(edu.psu.citeseerx.domain.Hub, java.lang.String, java.lang.String)
+     *
+     * @see edu.psu.citeseerx.dao2.HubDAO#addHubMapping(edu.psu.citeseerx.domain.Hub,
+     * java.lang.String, java.lang.String)
      */
     @Override
-    public void addHubMapping(Hub hub, String url, String doi)
-    throws DataAccessException {
-        hubDAO.addHubMapping(hub, url, doi);
-    }  //- addHubMapping
-    
+    public void addHubMapping(final Hub hub, final String url, final String doi)
+        throws DataAccessException
+    {
+        this.hubDAO.addHubMapping(hub, url, doi);
+    } // - addHubMapping
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.HubDAO#getHubs(java.lang.String)
      */
     @Override
-    public List<Hub> getHubs(String doi) throws DataAccessException {
-        return hubDAO.getHubs(doi);
-    }  //- getHubs
-    
+    public List<Hub> getHubs(final String doi)
+        throws DataAccessException
+    {
+        return this.hubDAO.getHubs(doi);
+    } // - getHubs
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.HubDAO#getHubsForUrl(java.lang.String)
      */
     @Override
-    public List<Hub> getHubsForUrl(String url) throws DataAccessException {
-        return hubDAO.getHubsForUrl(url);
-    } //- getHubsForUrl
+    public List<Hub> getHubsForUrl(final String url)
+        throws DataAccessException
+    {
+        return this.hubDAO.getHubsForUrl(url);
+    } // - getHubsForUrl
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.HubDAO#getHub(java.lang.String)
      */
     @Override
-    public Hub getHub(String url) throws DataAccessException {
-        return hubDAO.getHub(url);
-    } //- getHub
-    
+    public Hub getHub(final String url)
+        throws DataAccessException
+    {
+        return this.hubDAO.getHub(url);
+    } // - getHub
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.HubDAO#updateHub(edu.psu.citeseerx.domain.Hub)
      */
     @Override
-    public void updateHub(Hub hub) throws DataAccessException {
-        hubDAO.updateHub(hub);
-    } //- updateHub
-    
+    public void updateHub(final Hub hub)
+        throws DataAccessException
+    {
+        this.hubDAO.updateHub(hub);
+    } // - updateHub
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.HubDAO#insertHubMapping(long, long)
      */
     @Override
-    public void insertHubMapping(long urlID, long hubID)
-    throws DataAccessException {
-        hubDAO.insertHubMapping(urlID, hubID);
-    } //- insertHubMapping
-    
+    public void insertHubMapping(final long urlID, final long hubID)
+        throws DataAccessException
+    {
+        this.hubDAO.insertHubMapping(urlID, hubID);
+    } // - insertHubMapping
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.HubDAO#insertUrl(java.lang.String, java.lang.String)
      */
     @Override
-    public long insertUrl(String doi, String url) {
-        return hubDAO.insertUrl(doi, url);
-    } //- insertUrl
-    
+    public long insertUrl(final String doi, final String url)
+    {
+        return this.hubDAO.insertUrl(doi, url);
+    } // - insertUrl
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.HubDAO#getUrls(java.lang.String)
      */
     @Override
-    public List<String> getUrls(String doi) {
-        return hubDAO.getUrls(doi);
-    } //- getUrls
-    
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.HubDAO#getPaperIdsFromHubUrl(java.lang.String)
-     */
-    public List<String> getPaperIdsFromHubUrl(String hubUrl)
-            throws DataAccessException {
-        // TODO Auto-generated method stub
-        return hubDAO.getPaperIdsFromHubUrl(hubUrl);
-    } //- getPaperIdsFromHubUrl
-    
-    ///////////////////////////////////////////////////////
-    //  CiteChart DAO                               
-    ///////////////////////////////////////////////////////
+    public List<String> getUrls(final String doi)
+    {
+        return this.hubDAO.getUrls(doi);
+    } // - getUrls
 
     /*
      * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.HubDAO#getPaperIdsFromHubUrl(java.lang.String)
+     */
+    @Override
+    public List<String> getPaperIdsFromHubUrl(final String hubUrl)
+        throws DataAccessException
+    {
+        // TODO Auto-generated method stub
+        return this.hubDAO.getPaperIdsFromHubUrl(hubUrl);
+    } // - getPaperIdsFromHubUrl
+
+    // /////////////////////////////////////////////////////
+    // CiteChart DAO
+    // /////////////////////////////////////////////////////
+
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.CiteChartDAO#checkChartUpdateRequired(java.lang.String)
      */
     @Override
-    public boolean checkChartUpdateRequired(String doi)
-    throws DataAccessException {
-        return citeChartDAO.checkChartUpdateRequired(doi);
-    }  //- chartUpdateRequired
-    
+    public boolean checkChartUpdateRequired(final String doi)
+        throws DataAccessException
+    {
+        return this.citeChartDAO.checkChartUpdateRequired(doi);
+    } // - chartUpdateRequired
+
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.CiteChartDAO#insertChartUpdate(java.lang.String, int, java.lang.String)
+     *
+     * @see edu.psu.citeseerx.dao2.CiteChartDAO#insertChartUpdate(java.lang.String, int,
+     * java.lang.String)
      */
     @Override
-    public void insertChartUpdate(String doi, int lastNcites, String chartData)
-    throws DataAccessException {
-        citeChartDAO.insertChartUpdate(doi, lastNcites, chartData);
-    }  //- insertChartUpdate
-    
-    /* (non-Javadoc)
+    public void insertChartUpdate(final String doi, final int lastNcites, final String chartData)
+        throws DataAccessException
+    {
+        this.citeChartDAO.insertChartUpdate(doi, lastNcites, chartData);
+    } // - insertChartUpdate
+
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.CiteChartDAO#getCiteChartData(java.lang.String)
      */
     @Override
-    public String getCiteChartData(String doi) throws DataAccessException {
-        return citeChartDAO.getCiteChartData(doi);
-    } //- getCiteChartData
-    
-    
-    ///////////////////////////////////////////////////////
-    //  Legacy ID DAO                               
-    ///////////////////////////////////////////////////////
+    public String getCiteChartData(final String doi)
+        throws DataAccessException
+    {
+        return this.citeChartDAO.getCiteChartData(doi);
+    } // - getCiteChartData
+
+    // /////////////////////////////////////////////////////
+    // Legacy ID DAO
+    // /////////////////////////////////////////////////////
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.LegacyIDDAO#getNewID(int)
      */
     @Override
-    public String getNewID(int legacyID) throws DataAccessException {
-        return legacyIDDAO.getNewID(legacyID);
-    }  //- getNewID
-    
+    public String getNewID(final int legacyID)
+        throws DataAccessException
+    {
+        return this.legacyIDDAO.getNewID(legacyID);
+    } // - getNewID
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.LegacyIDDAO#insertLegacyIDMapping(java.lang.String, int)
      */
     @Override
-    public void insertLegacyIDMapping(String csxID, int legacyID)
-    throws DataAccessException {
-        legacyIDDAO.insertLegacyIDMapping(csxID, legacyID);
-    }  //- insertLegacyIDMapping
+    public void insertLegacyIDMapping(final String csxID, final int legacyID)
+        throws DataAccessException
+    {
+        this.legacyIDDAO.insertLegacyIDMapping(csxID, legacyID);
+    } // - insertLegacyIDMapping
 
-    ///////////////////////////////////////////////////////
-    //  Tag DAO                               
-    ///////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////
+    // Tag DAO
+    // /////////////////////////////////////////////////////
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.TagDAO#addTag(java.lang.String, java.lang.String)
      */
     @Override
-    public void addTag(String paperid, String tag) throws DataAccessException {
-        tagDAO.addTag(paperid, tag);
-    }  //- addTag
-    
+    public void addTag(final String paperid, final String tag)
+        throws DataAccessException
+    {
+        this.tagDAO.addTag(paperid, tag);
+    } // - addTag
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.TagDAO#deleteTag(java.lang.String, java.lang.String)
      */
     @Override
-    public void deleteTag(String paperid, String tag) throws DataAccessException {
-        tagDAO.deleteTag(paperid, tag);
-    }  //- deleteTag
-    
+    public void deleteTag(final String paperid, final String tag)
+        throws DataAccessException
+    {
+        this.tagDAO.deleteTag(paperid, tag);
+    } // - deleteTag
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.TagDAO#getTags(java.lang.String)
      */
     @Override
-    public List<Tag> getTags(String paperid) throws DataAccessException {
-        return tagDAO.getTags(paperid);
-    }  //- getTags
-    
-    
-    ///////////////////////////////////////////////////////
-    //  Admin DAO                               
-    ///////////////////////////////////////////////////////
+    public List<Tag> getTags(final String paperid)
+        throws DataAccessException
+    {
+        return this.tagDAO.getTags(paperid);
+    } // - getTags
+
+    // /////////////////////////////////////////////////////
+    // Admin DAO
+    // /////////////////////////////////////////////////////
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AdminDAO#setBanner(java.lang.String)
      */
-    @Override 
-    public void setBanner(String banner) throws DataAccessException {
-        adminDAO.setBanner(banner);
-    }  //- setBanner
-    
+    @Override
+    public void setBanner(final String banner)
+        throws DataAccessException
+    {
+        this.adminDAO.setBanner(banner);
+    } // - setBanner
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AdminDAO#getBanner()
      */
     @Override
-    public String getBanner() throws DataAccessException {
-        return adminDAO.getBanner();
-    }  //- getBanner
+    public String getBanner()
+        throws DataAccessException
+    {
+        return this.adminDAO.getBanner();
+    } // - getBanner
 
-    ///////////////////////////////////////////////////////
-    //  ExternalLink DAO                               
-    ///////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////
+    // ExternalLink DAO
+    // /////////////////////////////////////////////////////
 
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#AddExternalLink(edu.psu.citeseerx.domain.ExternalLink)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * edu.psu.citeseerx.dao2.ExternalLinkDAO#AddExternalLink(edu.psu.citeseerx.domain.ExternalLink)
      */
     @Override
-    public void addExternalLink(ExternalLink eLink) throws DataAccessException {
-        externalLinkDAO.addExternalLink(eLink);
-    } //- AddExternalLink
+    public void addExternalLink(final ExternalLink eLink)
+        throws DataAccessException
+    {
+        this.externalLinkDAO.addExternalLink(eLink);
+    } // - AddExternalLink
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#addLinkType(edu.psu.citeseerx.domain.LinkType)
      */
     @Override
-    public void addLinkType(LinkType link) throws DataAccessException {
-        externalLinkDAO.addLinkType(link);
-    } //- addLinkType
+    public void addLinkType(final LinkType link)
+        throws DataAccessException
+    {
+        this.externalLinkDAO.addLinkType(link);
+    } // - addLinkType
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#getExternalLiks(java.lang.String)
      */
     @Override
-    public List<ExternalLink> getExternalLinks(String doi)
-            throws DataAccessException {
-        return externalLinkDAO.getExternalLinks(doi);
-    } //- getExternalLiks
+    public List<ExternalLink> getExternalLinks(final String doi)
+        throws DataAccessException
+    {
+        return this.externalLinkDAO.getExternalLinks(doi);
+    } // - getExternalLiks
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#getLinkType(java.lang.String)
      */
     @Override
-    public LinkType getLinkType(String label) throws DataAccessException {
-        return externalLinkDAO.getLinkType(label);
-    } //- getLinkType
+    public LinkType getLinkType(final String label)
+        throws DataAccessException
+    {
+        return this.externalLinkDAO.getLinkType(label);
+    } // - getLinkType
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#getLinkTypes()
      */
     @Override
-    public List<LinkType> getLinkTypes() throws DataAccessException {
-        return externalLinkDAO.getLinkTypes();
-    } //- getLinkTypes
+    public List<LinkType> getLinkTypes()
+        throws DataAccessException
+    {
+        return this.externalLinkDAO.getLinkTypes();
+    } // - getLinkTypes
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#DeleteLinkType(edu.psu.citeseerx.domain.LinkType)
      */
     @Override
-    public void deleteLinkType(LinkType link) throws DataAccessException {
-        externalLinkDAO.deleteLinkType(link);
-    } //- DeleteLinkType
+    public void deleteLinkType(final LinkType link)
+        throws DataAccessException
+    {
+        this.externalLinkDAO.deleteLinkType(link);
+    } // - DeleteLinkType
 
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#UpdateLinkType(edu.psu.citeseerx.domain.LinkType, java.lang.String)
+    /*
+     * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#UpdateLinkType(edu.psu.citeseerx.domain.LinkType,
+     * java.lang.String)
      */
     @Override
-    public void updateLinkType(LinkType link, String oldLabel)
-            throws DataAccessException {
-        externalLinkDAO.updateLinkType(link, oldLabel);
-    } //- updateLinkType
+    public void updateLinkType(final LinkType link, final String oldLabel)
+        throws DataAccessException
+    {
+        this.externalLinkDAO.updateLinkType(link, oldLabel);
+    } // - updateLinkType
 
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#updateExternalLink(edu.psu.citeseerx.domain.ExternalLink)
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * edu.psu.citeseerx.dao2.ExternalLinkDAO#updateExternalLink(edu.psu.citeseerx.domain.ExternalLink
+     * )
      */
     @Override
-    public void updateExternalLink(ExternalLink extLink)
-            throws DataAccessException {
-        externalLinkDAO.updateExternalLink(extLink);
-    } //- updateExternalLink
+    public void updateExternalLink(final ExternalLink extLink)
+        throws DataAccessException
+    {
+        this.externalLinkDAO.updateExternalLink(extLink);
+    } // - updateExternalLink
 
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#getPapersNoELink(java.lang.String, java.lang.String, java.lang.Long)
+    /*
+     * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#getPapersNoELink(java.lang.String,
+     * java.lang.String, java.lang.Long)
      */
     @Override
-    public List<String> getPapersNoELink(String label, String lastID,
-            Long amount) {
-        return externalLinkDAO.getPapersNoELink(label, lastID, amount);
-    } //- getPapersNoELink
-    
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#getExternalLinkExist(java.lang.String, java.lang.String)
+    public List<String> getPapersNoELink(final String label, final String lastID, final Long amount)
+    {
+        return this.externalLinkDAO.getPapersNoELink(label, lastID, amount);
+    } // - getPapersNoELink
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#getExternalLinkExist(java.lang.String,
+     * java.lang.String)
      */
     @Override
-    public boolean getExternalLinkExist(String label, String doi)
-            throws DataAccessException {
-        return externalLinkDAO.getExternalLinkExist(label, doi);
-    } //- getExternalLinkExist
+    public boolean getExternalLinkExist(final String label, final String doi)
+        throws DataAccessException
+    {
+        return this.externalLinkDAO.getExternalLinkExist(label, doi);
+    } // - getExternalLinkExist
 
-
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#deleteExternalLink(java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#deleteExternalLink(java.lang.String,
+     * java.lang.String)
      */
     @Override
-    public void deleteExternalLink(String doi, String label)
-            throws DataAccessException {
-        externalLinkDAO.deleteExternalLink(doi, label);
-    } //- deleteExternalLink
+    public void deleteExternalLink(final String doi, final String label)
+        throws DataAccessException
+    {
+        this.externalLinkDAO.deleteExternalLink(doi, label);
+    } // - deleteExternalLink
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.ExternalLinkDAO#getLink(java.lang.String, java.lang.String)
      */
     @Override
-    public ExternalLink getLink(String doi, String label)
-            throws DataAccessException {
-        return externalLinkDAO.getLink(doi, label);
-    } //- getLink
+    public ExternalLink getLink(final String doi, final String label)
+        throws DataAccessException
+    {
+        return this.externalLinkDAO.getLink(doi, label);
+    } // - getLink
 
-    ///////////////////////////////////////////////////////
-    //  Table DAO                               
-    ///////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////
+    // Table DAO
+    // /////////////////////////////////////////////////////
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.TableDAO#getTable(java.lang.Long)
      */
     @Override
-    public Table getTable(Long id) throws DataAccessException {
-        return tableDAO.getTable(id);
-    } //- getTable
-    
+    public Table getTable(final Long id)
+        throws DataAccessException
+    {
+        return this.tableDAO.getTable(id);
+    } // - getTable
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.TableDAO#countTable()
      */
     @Override
-    public Integer countTable() throws DataAccessException {
-        return tableDAO.countTable();
-    } //- countTable
+    public Integer countTable()
+        throws DataAccessException
+    {
+        return this.tableDAO.countTable();
+    } // - countTable
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.TableDAO#insertTable(edu.psu.citeseerx.domain.Table)
      */
     @Override
-    public void insertTable(Table tobj) throws DataAccessException {
-    	tableDAO.insertTable(tobj);
-    } //- insertTable
-    
+    public void insertTable(final Table tobj)
+        throws DataAccessException
+    {
+        this.tableDAO.insertTable(tobj);
+    } // - insertTable
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.TableDAO#deleteTable(java.lang.Long)
      */
     @Override
-    public void deleteTable(Long id) throws DataAccessException {
-    	tableDAO.deleteTable(id);
-	} //- deleteTable
-    
+    public void deleteTable(final Long id)
+        throws DataAccessException
+    {
+        this.tableDAO.deleteTable(id);
+    } // - deleteTable
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.TableDAO#updateTableIndexTime()
      */
     @Override
-    public void updateTableIndexTime() throws DataAccessException {
-    	tableDAO.updateTableIndexTime();
-    } //- updateTableIndexTime
-    
+    public void updateTableIndexTime()
+        throws DataAccessException
+    {
+        this.tableDAO.updateTableIndexTime();
+    } // - updateTableIndexTime
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.TableDAO#getUpdatedTables(java.sql.Date)
      */
     @Override
-    public List<Table> getUpdatedTables(java.sql.Date dt)
-    throws DataAccessException {
-    	return tableDAO.getUpdatedTables(dt);
-    } //- getUpdatedTables
-    
+    public List<Table> getUpdatedTables(final java.sql.Date dt)
+        throws DataAccessException
+    {
+        return this.tableDAO.getUpdatedTables(dt);
+    } // - getUpdatedTables
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.TableDAO#getTables(java.lang.String, boolean)
      */
     @Override
-    public List<Table> getTables(String id, boolean idtype)
-    throws DataAccessException {
-    	return tableDAO.getTables(id, idtype);
-    } //- getTables
-    
+    public List<Table> getTables(final String id, final boolean idtype)
+        throws DataAccessException
+    {
+        return this.tableDAO.getTables(id, idtype);
+    } // - getTables
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.TableDAO#lastTableIndexTime()
      */
     @Override
-    public java.sql.Date lastTableIndexTime() throws DataAccessException {
-    	return tableDAO.lastTableIndexTime();
-    } //-lastTableIndexTime
-    
-    ///////////////////////////////////////////////////////
-    //  UniqueAuthor DAO                               
-    ///////////////////////////////////////////////////////
+    public java.sql.Date lastTableIndexTime()
+        throws DataAccessException
+    {
+        return this.tableDAO.lastTableIndexTime();
+    } // -lastTableIndexTime
+
+    // /////////////////////////////////////////////////////
+    // UniqueAuthor DAO
+    // /////////////////////////////////////////////////////
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#getAuthor(java.lang.String)
      */
     @Override
-    public UniqueAuthor getAuthor(String aid) throws DataAccessException {
-        return uauthDAO.getAuthor(aid);
-    }  //- getdocAuthors
-    
+    public UniqueAuthor getAuthor(final String aid)
+        throws DataAccessException
+    {
+        return this.uauthDAO.getAuthor(aid);
+    } // - getdocAuthors
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#getAuthVarnames(java.lang.String)
      */
     @Override
-    public List<String> getAuthVarnames(String aid) throws DataAccessException {
-        return uauthDAO.getAuthVarnames(aid);
-    }  //- getAuthVarnames
+    public List<String> getAuthVarnames(final String aid)
+        throws DataAccessException
+    {
+        return this.uauthDAO.getAuthVarnames(aid);
+    } // - getAuthVarnames
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#getAuthDocsOrdByCites(java.lang.String)
      */
     @Override
-    public List<ThinDoc> getAuthDocsOrdByCites(String aid)
-    throws DataAccessException {
-        return uauthDAO.getAuthDocsOrdByCites(aid);
-    }  //- getAuthDocs
+    public List<ThinDoc> getAuthDocsOrdByCites(final String aid)
+        throws DataAccessException
+    {
+        return this.uauthDAO.getAuthDocsOrdByCites(aid);
+    } // - getAuthDocs
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#getAuthDocsOrdByYear(java.lang.String)
      */
     @Override
-    public List<ThinDoc> getAuthDocsOrdByYear(String aid)
-    throws DataAccessException {
-        return uauthDAO.getAuthDocsOrdByYear(aid);
-    }  //- getAuthDocs
+    public List<ThinDoc> getAuthDocsOrdByYear(final String aid)
+        throws DataAccessException
+    {
+        return this.uauthDAO.getAuthDocsOrdByYear(aid);
+    } // - getAuthDocs
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#getAuthorRecords(java.lang.String, java.util.List<java.lang.Integer>)
+     *
+     * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#getAuthorRecords(java.lang.String,
+     * java.util.List<java.lang.Integer>)
      */
-    @Override	
-	public List<Integer> getAuthorRecords(String aid) throws DataAccessException {
-		return uauthDAO.getAuthorRecords(aid);
-	} //- getAuthorsByPapers
+    @Override
+    public List<Integer> getAuthorRecords(final String aid)
+        throws DataAccessException
+    {
+        return this.uauthDAO.getAuthorRecords(aid);
+    } // - getAuthorsByPapers
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#getAuthorRecordsByPapers(java.lang.String, java.util.List<java.lang.Integer>)
+     *
+     * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#getAuthorRecordsByPapers(java.lang.String,
+     * java.util.List<java.lang.Integer>)
      */
-    @Override	
-	public List<Integer> getAuthorRecordsByPapers(String aid, List<Integer> papers) throws DataAccessException {
-		return uauthDAO.getAuthorRecordsByPapers(aid, papers);
-	} //- getAuthorsByPapers
+    @Override
+    public List<Integer> getAuthorRecordsByPapers(final String aid, final List<Integer> papers)
+        throws DataAccessException
+    {
+        return this.uauthDAO.getAuthorRecordsByPapers(aid, papers);
+    } // - getAuthorsByPapers
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#updateAuthNdocs(java.lang.String)
      */
-	public void updateAuthNdocs(String aid) throws DataAccessException {
-		uauthDAO.updateAuthNdocs(aid);
-	} //- updateAuthNdocs
+    @Override
+    public void updateAuthNdocs(final String aid)
+        throws DataAccessException
+    {
+        this.uauthDAO.updateAuthNdocs(aid);
+    } // - updateAuthNdocs
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#updateAuthNcites(java.lang.String)
      */
-	public void updateAuthNcites(String aid) throws DataAccessException {
-		uauthDAO.updateAuthNcites(aid);
-	} //- updateAuthNcites
+    @Override
+    public void updateAuthNcites(final String aid)
+        throws DataAccessException
+    {
+        this.uauthDAO.updateAuthNcites(aid);
+    } // - updateAuthNcites
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#updateAuthInfo(edu.psu.citeseerx.domain.UniqueAuthor)
+     *
+     * @see
+     * edu.psu.citeseerx.dao2.UniqueAuthorDAO#updateAuthInfo(edu.psu.citeseerx.domain.UniqueAuthor)
      */
-	public void updateAuthInfo(UniqueAuthor uauth) throws DataAccessException {
-		uauthDAO.updateAuthInfo(uauth);
-	} //- updateAuthInfo
+    @Override
+    public void updateAuthInfo(final UniqueAuthor uauth)
+        throws DataAccessException
+    {
+        this.uauthDAO.updateAuthInfo(uauth);
+    } // - updateAuthInfo
 
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#removeAuthor(java.lang.String)
      */
-	public void removeAuthor(String aid) throws DataAccessException {
-		uauthDAO.removeAuthor(aid);
-	} //- removeAuthor
+    @Override
+    public void removeAuthor(final String aid)
+        throws DataAccessException
+    {
+        this.uauthDAO.removeAuthor(aid);
+    } // - removeAuthor
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#moveAuthorRecord(java.lang.String, java.util.List<java.lang.String>)
-     */
-	public void moveAuthorRecords(String target_aid, List<Integer> author_records) throws DataAccessException {
-		uauthDAO.moveAuthorRecords(target_aid, author_records);
-	} //- moveAuthorRecords
-		
-
-    ///////////////////////////////////////////////////////
-    //  UniqueAuthorVersion DAO                               
-    ///////////////////////////////////////////////////////
-
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.UniqueAuthorVersionDAO#updateUauthorInfo(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     *
+     * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#moveAuthorRecord(java.lang.String,
+     * java.util.List<java.lang.String>)
      */
     @Override
-	public void updateUauthorInfo(String userid, String aid, String new_canname, String new_affil) 
-		throws DataAccessException {
-		uauthVersionDAO.updateUauthorInfo(userid, aid, new_canname, new_affil);
-	} //- updateUauthorInfo
+    public void moveAuthorRecords(final String target_aid, final List<Integer> author_records)
+        throws DataAccessException
+    {
+        this.uauthDAO.moveAuthorRecords(target_aid, author_records);
+    } // - moveAuthorRecords
+
+    // /////////////////////////////////////////////////////
+    // UniqueAuthorVersion DAO
+    // /////////////////////////////////////////////////////
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.UniqueAuthorVersionDAO#mergeUauthors(java.lang.String, java.lang.String, java.lang.String)
+     *
+     * @see edu.psu.citeseerx.dao2.UniqueAuthorVersionDAO#updateUauthorInfo(java.lang.String,
+     * java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-	public void mergeUauthors(String userid, String aid1, String aid2)
-		throws DataAccessException {
-		uauthVersionDAO.mergeUauthors(userid, aid1, aid2);
-	} //- mergeUauthors
+    public void updateUauthorInfo(final String userid, final String aid, final String new_canname, final String new_affil)
+        throws DataAccessException
+    {
+        this.uauthVersionDAO.updateUauthorInfo(userid, aid, new_canname, new_affil);
+    } // - updateUauthorInfo
 
     /*
      * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.UniqueAuthorVersionDAO#removeUauthorPapers(java.lang.String, java.lang.String, java.util.List<java.lang.Integer>)
+     *
+     * @see edu.psu.citeseerx.dao2.UniqueAuthorVersionDAO#mergeUauthors(java.lang.String,
+     * java.lang.String, java.lang.String)
      */
     @Override
-	public void removeUauthorPapers(String userid, String aid, List<Integer> papers) 
-		throws DataAccessException {
-		uauthVersionDAO.removeUauthorPapers(userid, aid, papers);
-	} //- removeUauthorPapers
+    public void mergeUauthors(final String userid, final String aid1, final String aid2)
+        throws DataAccessException
+    {
+        this.uauthVersionDAO.mergeUauthors(userid, aid1, aid2);
+    } // - mergeUauthors
 
-    ///////////////////////////////////////////////////////
-    //  AlgorithmDAO                               
-    ///////////////////////////////////////////////////////
-    
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
+     * @see edu.psu.citeseerx.dao2.UniqueAuthorVersionDAO#removeUauthorPapers(java.lang.String,
+     * java.lang.String, java.util.List<java.lang.Integer>)
+     */
+    @Override
+    public void removeUauthorPapers(final String userid, final String aid, final List<Integer> papers)
+        throws DataAccessException
+    {
+        this.uauthVersionDAO.removeUauthorPapers(userid, aid, papers);
+    } // - removeUauthorPapers
+
+    // /////////////////////////////////////////////////////
+    // AlgorithmDAO
+    // /////////////////////////////////////////////////////
+
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AlgorithmDAO#countAlgorithm()
      */
     @Override
-    public Integer countAlgorithm() throws DataAccessException {
-        return algorithmDAO.countAlgorithm();
-    } //- countAlgorithm
+    public Integer countAlgorithm()
+        throws DataAccessException
+    {
+        return this.algorithmDAO.countAlgorithm();
+    } // - countAlgorithm
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AlgorithmDAO#getAlgorithm(java.lang.String)
      */
     @Override
-    public Algorithm getAlgorithm(long id) throws DataAccessException {
-        return algorithmDAO.getAlgorithm(id);
-    } //- getAlgorithm
+    public Algorithm getAlgorithm(final long id)
+        throws DataAccessException
+    {
+        return this.algorithmDAO.getAlgorithm(id);
+    } // - getAlgorithm
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AlgorithmDAO#getUpdatedAlgorithms(java.util.Date)
      */
     @Override
-    public List<Algorithm> getUpdatedAlgorithms(Date dt)
-            throws DataAccessException {
-        return algorithmDAO.getUpdatedAlgorithms(dt);
-    } //- getUpdatedAlgorithms
+    public List<Algorithm> getUpdatedAlgorithms(final Date dt)
+        throws DataAccessException
+    {
+        return this.algorithmDAO.getUpdatedAlgorithms(dt);
+    } // - getUpdatedAlgorithms
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AlgorithmDAO#insertAlgorithm(edu.psu.citeseerx.domain.Algorithm)
      */
     @Override
-    public void insertAlgorithm(Algorithm oneAlgorithm)
-            throws DataAccessException {
-        algorithmDAO.insertAlgorithm(oneAlgorithm);
-    } //- insertAlgorithm
+    public void insertAlgorithm(final Algorithm oneAlgorithm)
+        throws DataAccessException
+    {
+        this.algorithmDAO.insertAlgorithm(oneAlgorithm);
+    } // - insertAlgorithm
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AlgorithmDAO#lastAlgorithmIndexTime()
      */
     @Override
-    public Date lastAlgorithmIndexTime() throws DataAccessException {
-        return algorithmDAO.lastAlgorithmIndexTime();
-    } //- lastAlgorithmIndexTime
+    public Date lastAlgorithmIndexTime()
+        throws DataAccessException
+    {
+        return this.algorithmDAO.lastAlgorithmIndexTime();
+    } // - lastAlgorithmIndexTime
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.AlgorithmDAO#updateAlgorithmIndexTime()
      */
     @Override
-    public void updateAlgorithmIndexTime() throws DataAccessException {
-        algorithmDAO.updateAlgorithmIndexTime();
-    } //- updateAlgorithmIndexTime
-    
-    ///////////////////////////////////////////////////////
-    //  GeneralStatistics                               
-    ///////////////////////////////////////////////////////
-    
+    public void updateAlgorithmIndexTime()
+        throws DataAccessException
+    {
+        this.algorithmDAO.updateAlgorithmIndexTime();
+    } // - updateAlgorithmIndexTime
+
+    // /////////////////////////////////////////////////////
+    // GeneralStatistics
+    // /////////////////////////////////////////////////////
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.GeneralStatistics#getAuthorsInCollection()
      */
     @Override
-    public long getAuthorsInCollection() {
-        return generalStatistics.getAuthorsInCollection();
-    } //- getAuthorsInCollection
-    
+    public long getAuthorsInCollection()
+    {
+        return this.generalStatistics.getAuthorsInCollection();
+    } // - getAuthorsInCollection
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.GeneralStatistics#getCitationsInCollection()
      */
     @Override
-    public long getCitationsInCollection() {
-    	return generalStatistics.getCitationsInCollection();
-    } //- getCitationsInCollection
-    
+    public long getCitationsInCollection()
+    {
+        return this.generalStatistics.getCitationsInCollection();
+    } // - getCitationsInCollection
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.GeneralStatistics#getDocumentsInCollection()
      */
     @Override
-    public long getDocumentsInCollection() {
-    	return generalStatistics.getDocumentsInCollection();
-    } //- getDocumentsInCollection
-    
+    public long getDocumentsInCollection()
+    {
+        return this.generalStatistics.getDocumentsInCollection();
+    } // - getDocumentsInCollection
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.GeneralStatistics#getPublicDocumentsInCollection()
      */
     @Override
-    public long getPublicDocumentsInCollection() {
-    	return generalStatistics.getPublicDocumentsInCollection();
-    } //- getPublicDocumentsInCollection
-    
+    public long getPublicDocumentsInCollection()
+    {
+        return this.generalStatistics.getPublicDocumentsInCollection();
+    } // - getPublicDocumentsInCollection
+
     /*
      * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.GeneralStatistics#getDisambiguatedAuthorsInCollection()
      */
     @Override
-    public long getDisambiguatedAuthorsInCollection() {
-    	return generalStatistics.getDisambiguatedAuthorsInCollection();
-    } //- getDisambiguatedAuthorsInCollection
-    
+    public long getDisambiguatedAuthorsInCollection()
+    {
+        return this.generalStatistics.getDisambiguatedAuthorsInCollection();
+    } // - getDisambiguatedAuthorsInCollection
+
     @Override
-    public long getUniqueAuthorsInCollection() {
-    	return generalStatistics.getUniqueAuthorsInCollection();
-    } //- getUniqueAuthorsInCollection
-    
+    public long getUniqueAuthorsInCollection()
+    {
+        return this.generalStatistics.getUniqueAuthorsInCollection();
+    } // - getUniqueAuthorsInCollection
+
     @Override
-    public long getNumberofUniquePublicDocuments() {
-    	return generalStatistics.getNumberofUniquePublicDocuments();
-    } //- getNumberofUniquePublicDocuments
-    
+    public long getNumberofUniquePublicDocuments()
+    {
+        return this.generalStatistics.getNumberofUniquePublicDocuments();
+    } // - getNumberofUniquePublicDocuments
+
     @Override
-    public long getUniqueEntitiesInCollection() {
-    	return generalStatistics.getUniqueEntitiesInCollection();
-    } //- getUniqueEntitiesInCollection
+    public long getUniqueEntitiesInCollection()
+    {
+        return this.generalStatistics.getUniqueEntitiesInCollection();
+    } // - getUniqueEntitiesInCollection
 
-    
-    ///////////////////////////////////////////////////////
-    //  RedirectPDFDAO                               
-    ///////////////////////////////////////////////////////
-	@Override
-	public PDFRedirect getPDFRedirect(String doi) throws DataAccessException {
-		return redirectPDFDAO.getPDFRedirect(doi);
-	}
+    // /////////////////////////////////////////////////////
+    // RedirectPDFDAO
+    // /////////////////////////////////////////////////////
+    @Override
+    public PDFRedirect getPDFRedirect(final String doi)
+        throws DataAccessException
+    {
+        return this.redirectPDFDAO.getPDFRedirect(doi);
+    }
 
-	@Override
-	public void insertPDFRedirect(PDFRedirect pdfredirect)
-			throws DataAccessException {
-		
-		redirectPDFDAO.insertPDFRedirect(pdfredirect);
-	}
+    @Override
+    public void insertPDFRedirect(final PDFRedirect pdfredirect)
+        throws DataAccessException
+    {
 
-	@Override
-	public void updatePDFRedirect(String doi, PDFRedirect pdfredirect)
-			throws DataAccessException {
-		redirectPDFDAO.updatePDFRedirect(doi, pdfredirect);
-		
-	}
+        this.redirectPDFDAO.insertPDFRedirect(pdfredirect);
+    }
 
-	@Override
-	public void updatePDFRedirectTemplate(String label, String urltemplate)
-			throws DataAccessException {
-		 redirectPDFDAO.updatePDFRedirectTemplate(label, urltemplate);
-	}
-    
-}  //- class CSXDAOImpl
+    @Override
+    public void updatePDFRedirect(final String doi, final PDFRedirect pdfredirect)
+        throws DataAccessException
+    {
+        this.redirectPDFDAO.updatePDFRedirect(doi, pdfredirect);
+
+    }
+
+    @Override
+    public void updatePDFRedirectTemplate(final String label, final String urltemplate)
+        throws DataAccessException
+    {
+        this.redirectPDFDAO.updatePDFRedirectTemplate(label, urltemplate);
+    }
+
+} // - class CSXDAOImpl
