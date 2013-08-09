@@ -85,13 +85,18 @@ public abstract class CompactListContentBoxProvider
             final List<String> items = this.getItems(doi);
 
             final StringBuilder sb = new StringBuilder();
+
             for (final Iterator<String> iter = items.iterator(); iter.hasNext();) {
+
                 final String item = iter.next();
                 sb.append(item);
+
+                // Another item will be appended
                 if (iter.hasNext()) {
                     sb.append(this.separator);
                     sb.append(' ');
                 }
+
             }
 
             final ContentBox contentBox = new ContentBox(heading, sb.toString());
