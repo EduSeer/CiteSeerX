@@ -40,6 +40,7 @@ import edu.psu.citeseerx.dao2.TableDAO;
 import edu.psu.citeseerx.dao2.TagDAO;
 import edu.psu.citeseerx.dao2.UniqueAuthorDAO;
 import edu.psu.citeseerx.dao2.UniqueAuthorVersionDAO;
+import edu.psu.citeseerx.dao2.UnknownRepositoryException;
 import edu.psu.citeseerx.dao2.VersionDAO;
 import edu.psu.citeseerx.domain.Acknowledgment;
 import edu.psu.citeseerx.domain.Algorithm;
@@ -260,8 +261,9 @@ public class CSXDAOImpl
      * boolean, boolean, boolean, boolean, boolean)
      */
     @Override
-    public Document getDocumentFromDB(final String doi, final boolean getCitations, final boolean getContexts,
-            final boolean getSource, final boolean getAcks, final boolean getKeywords, final boolean getTags)
+    public Document getDocumentFromDB(final String doi, final boolean getCitations,
+            final boolean getContexts, final boolean getSource, final boolean getAcks,
+            final boolean getKeywords, final boolean getTags)
         throws DataAccessException
     {
 
@@ -315,7 +317,8 @@ public class CSXDAOImpl
      * boolean)
      */
     @Override
-    public Document getDocumentFromDB(final String doi, final boolean getContexts, final boolean getSource)
+    public Document getDocumentFromDB(final String doi, final boolean getContexts,
+            final boolean getSource)
         throws DataAccessException
     {
 
@@ -374,8 +377,9 @@ public class CSXDAOImpl
      * , boolean, boolean, boolean, boolean)
      */
     @Override
-    public void updateDocumentData(final Document doc, final boolean updateAuthors, final boolean updateCitations,
-            final boolean updateAcknowledgements, final boolean updateKeywords)
+    public void updateDocumentData(final Document doc, final boolean updateAuthors,
+            final boolean updateCitations, final boolean updateAcknowledgements,
+            final boolean updateKeywords)
         throws DataAccessException, IOException
     {
 
@@ -923,7 +927,8 @@ public class CSXDAOImpl
      * java.lang.String, int)
      */
     @Override
-    public List<DOIInfo> getSetDOIs(final Date start, final Date end, final String prev, final int amount)
+    public List<DOIInfo> getSetDOIs(final Date start, final Date end, final String prev,
+            final int amount)
         throws DataAccessException
     {
         return this.docDAO.getSetDOIs(start, end, prev, amount);
@@ -949,7 +954,8 @@ public class CSXDAOImpl
      * java.lang.String, int)
      */
     @Override
-    public List<String> getCrawledDOIs(final Date start, final Date end, final String lastDOI, final int amount)
+    public List<String> getCrawledDOIs(final Date start, final Date end, final String lastDOI,
+            final int amount)
         throws DataAccessException
     {
         return this.docDAO.getCrawledDOIs(start, end, lastDOI, amount);
@@ -1295,11 +1301,19 @@ public class CSXDAOImpl
      * java.lang.String)
      */
     @Override
-    public FileInputStream getFileInputStream(final String doi, final String repID, final String type)
+    public FileInputStream getFileInputStream(final String doi, final String repID,
+            final String type)
         throws IOException
     {
         return this.fileSysDAO.getFileInputStream(doi, repID, type);
     } // - getFileInputStream
+
+    @Override
+    public String getPath(final String doi, final String repID, final String type)
+        throws UnknownRepositoryException
+    {
+        return this.fileSysDAO.getPath(doi, repID, type);
+    }
 
     /*
      * (non-Javadoc)
@@ -2044,7 +2058,8 @@ public class CSXDAOImpl
      * java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-    public void updateUauthorInfo(final String userid, final String aid, final String new_canname, final String new_affil)
+    public void updateUauthorInfo(final String userid, final String aid, final String new_canname,
+            final String new_affil)
         throws DataAccessException
     {
         this.uauthVersionDAO.updateUauthorInfo(userid, aid, new_canname, new_affil);
@@ -2070,7 +2085,8 @@ public class CSXDAOImpl
      * java.lang.String, java.util.List<java.lang.Integer>)
      */
     @Override
-    public void removeUauthorPapers(final String userid, final String aid, final List<Integer> papers)
+    public void removeUauthorPapers(final String userid, final String aid,
+            final List<Integer> papers)
         throws DataAccessException
     {
         this.uauthVersionDAO.removeUauthorPapers(userid, aid, papers);

@@ -17,7 +17,7 @@
  ******************************************************************************/
 
 /**
- * This package entails all contributions to the SeerSuite
+ * This package and its subpackages contain all contributions to the SeerSuite
  * implemented at UKP.
  *
  * @author Roland Kluge

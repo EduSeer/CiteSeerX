@@ -225,6 +225,9 @@ public class DocumentDAOImpl
         return this.countDocs.run();
     } // - getNumberOfDocumentRecords
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> getAllDOIs()
         throws DataAccessException
