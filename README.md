@@ -1,8 +1,9 @@
-#CiteSeerX
+#EduSeer
 
-This is the source code for the [CiteSeerX academic digital library.](http://citeseerx.ist.psu.edu) 
+EduSeer is a fork of the popular [SeerSuite/CiteSeerx](https://github.com/SeerLabs/CiteSeerX "CiteSeerX on GitHub").
 
-If you are interested in making contributions to CiteSeerX, please fork this repository and request to have your changes integrated via pull requests.
+It's long-term objective is to become a convenient platform for educational researchers.
 
-The code in the master branch should always be in a production-ready state so that it can be deployed at any time, while any other experimental code or code still in development should be in separate branches and merged into the master branch via pull requests.
-
+EduSeer has been founded in the course of the graduate program 
+[KDSL](http://www.kdsl.tu-darmstadt.de/) (Knowledge Discovery in Scientific Literature)
+at the [Ubiquituous Knowledge Processing Lab](http://www.ukp.tu-darmstadt.de/ "UKP Lab").
