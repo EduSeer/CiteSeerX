@@ -40,47 +40,58 @@ import edu.psu.citeseerx.utility.FileNamingUtils;
 import edu.psu.citeseerx.utility.FileUtils;
 
 /**
- * Spring-based JDBC and filesystem implementation of FileSysDAO. 
+ * Spring-based JDBC and filesystem implementation of FileSysDAO.
  *
  * @author Isaac Councill
  * @version $Rev$ $Date$
  */
-public class FileSysDAOImpl extends JdbcDaoSupport implements FileSysDAO {
+public class FileSysDAOImpl
+    extends JdbcDaoSupport
+    implements FileSysDAO
+{
 
     private RepositoryMap repMap;
-    
-    public void setRepositoryMap(RepositoryMap repMap) {
+
+    public void setRepositoryMap(final RepositoryMap repMap)
+    {
         this.repMap = repMap;
-    } //- setRepositoryMap
-    
-    
+    } // - setRepositoryMap
+
     private GetVersionByNum getVersionByNum;
     private GetVersionByName getVersionByName;
     private GetRepID getRepID;
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     *
      * @see org.springframework.dao.support.DaoSupport#initDao()
      */
-    protected void initDao() throws ApplicationContextException {
-        initMappingSqlQueries();
-    } //- initDao
-    
-    
-    protected void initMappingSqlQueries() throws ApplicationContextException {
-        getVersionByNum = new GetVersionByNum(getDataSource());
-        getVersionByName = new GetVersionByName(getDataSource());
-        getRepID = new GetRepID(getDataSource());
-    } //- initMappingSqlQueries
-    
-    
+    @Override
+    protected void initDao()
+        throws ApplicationContextException
+    {
+        this.initMappingSqlQueries();
+    } // - initDao
+
+    protected void initMappingSqlQueries()
+        throws ApplicationContextException
+    {
+        this.getVersionByNum = new GetVersionByNum(this.getDataSource());
+        this.getVersionByName = new GetVersionByName(this.getDataSource());
+        this.getRepID = new GetRepID(this.getDataSource());
+    } // - initMappingSqlQueries
+
     /*
      * (non-javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#getDocFromXML(java.lang.String, java.lang.String)
      */
-    public Document getDocFromXML(String repID, String relPath)
-    throws IOException {
+    @Override
+    public Document getDocFromXML(final String repID, final String relPath)
+        throws IOException
+    {
 
-        String path = repMap.buildFilePath(repID, relPath);
+        String path = this.repMap.buildFilePath(repID, relPath);
         FileInputStream in = new FileInputStream(path);
 
         Document doc = new Document();
@@ -88,203 +99,202 @@ public class FileSysDAOImpl extends JdbcDaoSupport implements FileSysDAO {
 
         in.close();
         return doc;
-        
-    }  //- getDocFromXML
-        
-    
+
+    } // - getDocFromXML
+
     /*
      * (non-javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#getDocVersion(java.lang.String, int)
      */
-    public Document getDocVersion(String doi, int version) throws IOException {
-        
+    @Override
+    public Document getDocVersion(final String doi, int version)
+        throws IOException
+    {
+
         String repID, path;
         String name = null;
         boolean deprecated = false;
         boolean spam = false;
-        
+
         if (version > 0) {
-            Document holder = getVersionByNum.run(doi, version);
-            if (holder == null) return null;
+            Document holder = this.getVersionByNum.run(doi, version);
+            if (holder == null)
+                return null;
 
             repID = holder.getVersionRepID();
             path = holder.getVersionPath();
             name = holder.getVersionName();
             deprecated = holder.isDeprecatedVersion();
             spam = holder.isSpamVersion();
-            
-        } else {
+
+        }
+        else {
             version = 0;
-            repID = getRepID.run(doi);
+            repID = this.getRepID.run(doi);
             path = FileNamingUtils.buildXMLPath(doi);
         }
-        
-        Document doc = getDocFromXML(repID, path);
-        
+
+        Document doc = this.getDocFromXML(repID, path);
+
         doc.setVersion(version);
         doc.setVersionName(name);
         doc.setVersionRepID(repID);
         doc.setVersionPath(path);
         doc.setVersionDeprecated(deprecated);
         doc.setVersionSpam(spam);
-        
+
         return doc;
-        
-    }  //- getVersion
-    
-    
+
+    } // - getVersion
+
     /*
      * (non-javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#getRepositoryID(java.lang.String)
      */
-    public String getRepositoryID(String doi) {
-        return getRepID.run(doi);
-    }  //- getRepositoryID
-    
-    
+    @Override
+    public String getRepositoryID(final String doi)
+    {
+        return this.getRepID.run(doi);
+    } // - getRepositoryID
+
     /*
      * (non-javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#getDocVersion(java.lang.String, java.lang.String)
      */
-    public Document getDocVersion(String doi, String name) throws IOException {
-        Document holder = getVersionByName.run(doi, name); 
-        if (holder == null) return null;
-        
-        Document doc = getDocFromXML(holder.getVersionRepID(),
-                holder.getVersionPath());
-        
+    @Override
+    public Document getDocVersion(final String doi, final String name)
+        throws IOException
+    {
+        Document holder = this.getVersionByName.run(doi, name);
+        if (holder == null)
+            return null;
+
+        Document doc = this.getDocFromXML(holder.getVersionRepID(), holder.getVersionPath());
+
         doc.setVersion(holder.getVersion());
         doc.setVersionName(holder.getVersionName());
         doc.setVersionRepID(holder.getVersionRepID());
         doc.setVersionPath(holder.getVersionPath());
         doc.setVersionDeprecated(holder.isDeprecatedVersion());
         doc.setVersionSpam(holder.isSpamVersion());
-        
+
         return doc;
-        
-    }  //- getVersion
-    
+
+    } // - getVersion
 
     /*
      * (non-javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#writeXML(edu.psu.citeseerx.domain.Document)
      */
-    public void writeXML(Document doc) throws IOException {
+    @Override
+    public void writeXML(final Document doc)
+        throws IOException
+    {
 
         String doi = doc.getDatum(Document.DOI_KEY, Document.UNENCODED);
-        
+
         DocumentFileInfo finfo = doc.getFileInfo();
-        String repID = finfo.getDatum(DocumentFileInfo.REP_ID_KEY,
-                DocumentFileInfo.UNENCODED);
+        String repID = finfo.getDatum(DocumentFileInfo.REP_ID_KEY, DocumentFileInfo.UNENCODED);
         String relPath = FileNamingUtils.buildXMLPath(doi);
-        String path = repMap.buildFilePath(repID, relPath);
-        
+        String path = this.repMap.buildFilePath(repID, relPath);
+
         FileOutputStream out = new FileOutputStream(path);
         doc.toXML(out, Document.INCLUDE_SYS_DATA);
         out.close();
-        
-    }  //- writeXML
-    
-    
+
+    } // - writeXML
+
     /*
      * (non-javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#writeVersion(edu.psu.citeseerx.domain.Document)
      */
-    public void writeVersion(Document doc) throws IOException {
+    @Override
+    public void writeVersion(final Document doc)
+        throws IOException
+    {
 
         String repID = doc.getVersionRepID();
         String relPath = doc.getVersionPath();
-        String path = repMap.buildFilePath(repID, relPath);
-        
+        String path = this.repMap.buildFilePath(repID, relPath);
+
         FileOutputStream out = new FileOutputStream(path);
         doc.toXML(out, Document.INCLUDE_SYS_DATA);
         out.close();
-        
-    }  //- writeVersion
-    
-    
+
+    } // - writeVersion
+
     /*
      * (non-javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getFileInputStream(java.lang.String, java.lang.String, java.lang.String)
+     *
+     * @see edu.psu.citeseerx.dao2.FileSysDAO#getFileInputStream(java.lang.String, java.lang.String,
+     * java.lang.String)
      */
-    public FileInputStream getFileInputStream(String doi, String repID,
-            String type) throws IOException {
-        
-        String dir = FileNamingUtils.getDirectoryFromDOI(doi);
-        String fn = doi+"."+type;
-        String relPath = dir+System.getProperty("file.separator")+fn;
-        String path = repMap.buildFilePath(repID, relPath);
-        
-        return new FileInputStream(path);
-        
-    }  //- getFileInputStream
+    @Override
+    public FileInputStream getFileInputStream(final String doi, final String repID, final String type)
+        throws IOException
+    {
 
-    /* (non-Javadoc)
+        String path = this.getPath(doi, repID, type);
+
+        return new FileInputStream(path);
+
+    } // - getFileInputStream
+
+    @Override
+    public String getPath(final String doi, final String repID, final String type)
+        throws UnknownRepositoryException
+    {
+        String dir = FileNamingUtils.getDirectoryFromDOI(doi);
+        String fn = doi + "." + type;
+        String relPath = dir + System.getProperty("file.separator") + fn;
+        String path = this.repMap.buildFilePath(repID, relPath);
+        return path;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#getPdfReader(java.lang.String, java.lang.String)
      */
-    public PdfReader getPdfReader(String doi, String repID)
-    throws IOException {
-      
+    @Override
+    public PdfReader getPdfReader(final String doi, final String repID)
+        throws IOException
+    {
+
         String dir = FileNamingUtils.getDirectoryFromDOI(doi);
-        String fn = doi+".pdf";
-        String relPath = dir+System.getProperty("file.separator")+fn;
-        String path = repMap.buildFilePath(repID, relPath);
+        String fn = doi + ".pdf";
+        String relPath = dir + System.getProperty("file.separator") + fn;
+        String path = this.repMap.buildFilePath(repID, relPath);
         PdfReader reader = new PdfReader(path);
         return reader;
-        
-    } //- getPdfReader
-    
-    private static final String DEF_GET_VERSION_BY_NUM_QUERY =
-        "select name, repositoryID, path, deprecated, spam from "+
-        "paperVersions where paperid=? and version=?";
-        
-    private class GetVersionByNum extends MappingSqlQuery {
-        
-        public GetVersionByNum(DataSource dataSource) {
-            setDataSource(dataSource);
-            setSql(DEF_GET_VERSION_BY_NUM_QUERY);
-            declareParameter(new SqlParameter(Types.VARCHAR));
-            declareParameter(new SqlParameter(Types.INTEGER));
-            compile();
-        } //- GetVersionByNum.GetVersionByNum
-        
-        public Document mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Document doc = new Document();
-            doc.setVersionName(rs.getString(1));
-            doc.setVersionRepID(rs.getString(2));
-            doc.setVersionPath(rs.getString(3));
-            doc.setVersionDeprecated(rs.getBoolean(4));
-            doc.setVersionSpam(rs.getBoolean(5));
-            return doc;
-        } //- GetVersionByNum.mapRow
-        
-        public Document run(String doi, int version) {
-            Object[] params = new Object[] { doi, new Integer(version) };
-            List<Document> list = execute(params);
-            if (list.isEmpty()) {
-                return null;
-            } else {
-                return (Document)list.get(0);
-            }
-        } //- GetVersionByNum.run
-    } //- class GetVersionByNum
 
-    
-    private static final String DEF_GET_VERSION_BY_NAME_QUERY =
-        "select version, repositoryID, path, deprecated, spam from "+
-        "paperVersions where paperid=? and name=?";
-    
-    private class GetVersionByName extends MappingSqlQuery {
-        
-        public GetVersionByName(DataSource dataSource) {
-            setDataSource(dataSource);
-            setSql(DEF_GET_VERSION_BY_NAME_QUERY);
-            declareParameter(new SqlParameter(Types.VARCHAR));
-            declareParameter(new SqlParameter(Types.VARCHAR));
-            compile();
-        } //- GetVersionByName.GetVersionByName 
-        
-        public Document mapRow(ResultSet rs, int rowNum) throws SQLException {
+    } // - getPdfReader
+
+    private static final String DEF_GET_VERSION_BY_NUM_QUERY = "select name, repositoryID, path, deprecated, spam from "
+            + "paperVersions where paperid=? and version=?";
+
+    private class GetVersionByNum
+        extends MappingSqlQuery
+    {
+
+        public GetVersionByNum(final DataSource dataSource)
+        {
+            this.setDataSource(dataSource);
+            this.setSql(DEF_GET_VERSION_BY_NUM_QUERY);
+            this.declareParameter(new SqlParameter(Types.VARCHAR));
+            this.declareParameter(new SqlParameter(Types.INTEGER));
+            this.compile();
+        } // - GetVersionByNum.GetVersionByNum
+
+        @Override
+        public Document mapRow(final ResultSet rs, final int rowNum)
+            throws SQLException
+        {
             Document doc = new Document();
             doc.setVersionName(rs.getString(1));
             doc.setVersionRepID(rs.getString(2));
@@ -292,76 +302,119 @@ public class FileSysDAOImpl extends JdbcDaoSupport implements FileSysDAO {
             doc.setVersionDeprecated(rs.getBoolean(4));
             doc.setVersionSpam(rs.getBoolean(5));
             return doc;
-        } //- GetVersionByName.mapRow
-        
-        public Document run(String doi, String name) {
+        } // - GetVersionByNum.mapRow
+
+        public Document run(final String doi, final int version)
+        {
+            Object[] params = new Object[] { doi, new Integer(version) };
+            List<Document> list = this.execute(params);
+            if (list.isEmpty())
+                return null;
+            else
+                return list.get(0);
+        } // - GetVersionByNum.run
+    } // - class GetVersionByNum
+
+    private static final String DEF_GET_VERSION_BY_NAME_QUERY = "select version, repositoryID, path, deprecated, spam from "
+            + "paperVersions where paperid=? and name=?";
+
+    private class GetVersionByName
+        extends MappingSqlQuery
+    {
+
+        public GetVersionByName(final DataSource dataSource)
+        {
+            this.setDataSource(dataSource);
+            this.setSql(DEF_GET_VERSION_BY_NAME_QUERY);
+            this.declareParameter(new SqlParameter(Types.VARCHAR));
+            this.declareParameter(new SqlParameter(Types.VARCHAR));
+            this.compile();
+        } // - GetVersionByName.GetVersionByName
+
+        @Override
+        public Document mapRow(final ResultSet rs, final int rowNum)
+            throws SQLException
+        {
+            Document doc = new Document();
+            doc.setVersionName(rs.getString(1));
+            doc.setVersionRepID(rs.getString(2));
+            doc.setVersionPath(rs.getString(3));
+            doc.setVersionDeprecated(rs.getBoolean(4));
+            doc.setVersionSpam(rs.getBoolean(5));
+            return doc;
+        } // - GetVersionByName.mapRow
+
+        public Document run(final String doi, final String name)
+        {
             Object[] params = new Object[] { doi, name };
-            List<Document> list = execute(params);
-            if (list.isEmpty()) {
+            List<Document> list = this.execute(params);
+            if (list.isEmpty())
                 return null;
-            } else {
-                return (Document)list.get(0);
-            }
-        } //- GetVersionByName.run
-    } //- class GetVersionByName
-    
-    
-    private static final String DEF_GET_REPID_QUERY =
-        "select repositoryID from papers where id=?";
-    
-    private class GetRepID extends MappingSqlQuery {
-        
-        public GetRepID(DataSource dataSource) {
-            setDataSource(dataSource);
-            setSql(DEF_GET_REPID_QUERY);
-            declareParameter(new SqlParameter(Types.VARCHAR));
-            compile();
-        } //- GetRepID.GetRepID
-        
-        public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+            else
+                return list.get(0);
+        } // - GetVersionByName.run
+    } // - class GetVersionByName
+
+    private static final String DEF_GET_REPID_QUERY = "select repositoryID from papers where id=?";
+
+    private class GetRepID
+        extends MappingSqlQuery
+    {
+
+        public GetRepID(final DataSource dataSource)
+        {
+            this.setDataSource(dataSource);
+            this.setSql(DEF_GET_REPID_QUERY);
+            this.declareParameter(new SqlParameter(Types.VARCHAR));
+            this.compile();
+        } // - GetRepID.GetRepID
+
+        @Override
+        public String mapRow(final ResultSet rs, final int rowNum)
+            throws SQLException
+        {
             return rs.getString(1);
-        } //- GetRepID.mapRow
-        
-        public String run(String doi) {
-            List<String> list = execute(doi);
-            if (list.isEmpty()) {
+        } // - GetRepID.mapRow
+
+        public String run(final String doi)
+        {
+            List<String> list = this.execute(doi);
+            if (list.isEmpty())
                 return null;
-            } else {
-                return (String)list.get(0);
-            }
-        } //- GetRepID.run
-    } //- class GetRepID
-    
-    
-    public static final String[] supportedTypes = new String[] {
-        "PDF", "PS", "DOC", "RTF"
-    };
-    
+            else
+                return list.get(0);
+        } // - GetRepID.run
+    } // - class GetRepID
+
+    public static final String[] supportedTypes = new String[] { "PDF", "PS", "DOC", "RTF" };
+
     public static final Set<String> typeLookup = new HashSet<String>();
-    
+
     static {
         for (String str : supportedTypes) {
             typeLookup.add(str);
         }
     }
-    
+
     /*
      * (non-javadoc)
+     *
      * @see edu.psu.citeseerx.dao2.FileSysDAO#getFileTypes(java.lang.String, java.lang.String)
      */
-    public List<String> getFileTypes(String doi, String repID)
-    throws IOException {
-        
+    @Override
+    public List<String> getFileTypes(final String doi, final String repID)
+        throws IOException
+    {
+
         String dir = FileNamingUtils.getDirectoryFromDOI(doi);
-        String path = repMap.buildFilePath(repID, dir);
-        
+        String path = this.repMap.buildFilePath(repID, dir);
+
         String[] files = new File(path).list();
         List<String> types = new ArrayList<String>();
-        
-        if (files == null) {
+
+        if (files == null)
             return types;
-        }
-        
+
         for (String file : files) {
             String ext = FileUtils.getExtension(file);
             ext = ext.substring(1);
@@ -371,8 +424,7 @@ public class FileSysDAOImpl extends JdbcDaoSupport implements FileSysDAO {
         }
         Collections.sort(types);
         return types;
-        
-    }  //- getFileTypes
 
-    
-}  //- class FileSysDAOImpl
+    } // - getFileTypes
+
+} // - class FileSysDAOImpl

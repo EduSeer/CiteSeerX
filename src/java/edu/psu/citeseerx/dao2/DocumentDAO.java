@@ -12,16 +12,16 @@
  */
 package edu.psu.citeseerx.dao2;
 
-import org.springframework.dao.DataAccessException;
-
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.dao.DataAccessException;
 
 import edu.psu.citeseerx.domain.DOIInfo;
 import edu.psu.citeseerx.domain.Document;
 
 /**
- * Provides transparent access to Document persistence storage 
+ * Provides transparent access to Document persistence storage
  * @author Isaac Councill
  * @version $Rev$ $Date$
  */
@@ -36,7 +36,7 @@ public interface DocumentDAO {
      */
     public Document getDocument(String docID, boolean getSource)
     throws DataAccessException;
-    
+
     /**
      * Inserts a document into the system
      * @param doc
@@ -57,7 +57,7 @@ public interface DocumentDAO {
      * @throws DataAccessException
      */
     public void updateDocument(Document doc) throws DataAccessException;
-    
+
     /**
      * Set the document as public or not.
      * @param doc
@@ -66,7 +66,7 @@ public interface DocumentDAO {
      */
     public void setDocState(Document doc, int toState)
     throws DataAccessException;
-    
+
     /**
      * Associates the given document to a cluster
      * @param doc
@@ -75,7 +75,7 @@ public interface DocumentDAO {
      */
     public void setDocCluster(Document doc, Long clusterID)
     throws DataAccessException;
-    
+
     /**
      * Updates the number of citations for the given document
      * @param doc
@@ -84,23 +84,30 @@ public interface DocumentDAO {
      */
     public void setDocNcites(Document doc, int ncites)
     throws DataAccessException;
-    
+
     /**
-     * 
+     *
      * @return Returns the number of documents within the system
      * @throws DataAccessException
      */
     public Integer getNumberOfDocumentRecords() throws DataAccessException;
-    
+
     /**
-     * 
+     * Returns all DOIs known to this instance.
+     *
+     * @return all document identifiers
+     */
+    public List<String> getAllDOIs() throws DataAccessException;
+
+    /**
+     *
      * @param start
      * @param amount
      * @return Returns a list of amount Document identifiers beginning at start
      * @throws DataAccessException
      */
     public List<String> getDOIs(String start, int amount) throws DataAccessException;
-    
+
     /**
      * @param start		Star date
      * @param end		End date
@@ -110,9 +117,9 @@ public interface DocumentDAO {
      * prev
      * @throws DataAccessException
      */
-    public List<DOIInfo> getSetDOIs(Date start, Date end, String prev,  
+    public List<DOIInfo> getSetDOIs(Date start, Date end, String prev,
     		int amount) throws DataAccessException;
-    
+
     /**
      * @param start
      * @param end
@@ -121,24 +128,24 @@ public interface DocumentDAO {
      * prev
      * @throws DataAccessException
      */
-    public Integer getSetDOICount(Date start, Date end, String prev) 
+    public Integer getSetDOICount(Date start, Date end, String prev)
     throws DataAccessException;
-    
+
     /**
-     * 
+     *
      * @param start
      * @param end
      * @param lastDOI
      * @param amount
-     * @return Returns amount or less DOIs representing documents crawled 
+     * @return Returns amount or less DOIs representing documents crawled
      * between start and end date, and beginning at lastDOI.
      * @throws DataAccessException
      */
     public List<String> getCrawledDOIs(Date start, Date end, String lastDOI,
-            int amount) throws DataAccessException; 
-    
+            int amount) throws DataAccessException;
+
     /**
-     * 
+     *
      * @param lastDOI
      * @param amount
      * @return Returns amount or less DOIs beginning at lastDOI. The DOI's
